@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'; // Import motion from Framer Motion
 
 export default function TasbeehCounter() {
   const [count, setCount] = useState(0);
-  const [selectedDhikr, setSelectedDhikr] = useState(null);
+  const [selectedDhikr, setSelectedDhikr] = useState('');
 
   useEffect(() => {
     const storedCount = localStorage.getItem('tasbeehCount');

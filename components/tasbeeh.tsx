@@ -52,7 +52,7 @@ export default function TasbeehCounter() {
     <motion.div
       initial={{ opacity: 0, scale: 0.5 }} // Initial animation when component loads
       animate={{ opacity: 1, scale: 1 }} // Animation when component is rendered
-      className="h-screen px-48 py-12 flex items-center boxed flex-col justify-center border-2 border-PrimarySalahSync rounded"
+      className="h-screen px-48 py-12 flex items-center boxed flex-col justify-center"
     >
       <select
         value={selectedDhikr}

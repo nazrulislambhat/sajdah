@@ -60,17 +60,17 @@ export default function TasbeehCounter() {
         className="mb-4 text-xs bg-transparent py-2 px-2 text-PrimarySalahSync border-2 border-PrimarySalahSync rounded focus-visible:border-SecondarySalahSync"
       >
         <option value="">Select Dhikr</option>
-        <option value="Alhamdulillah - الحمد لله">
-          Alhamdulillah - الحمد لله
+        <option value="Alhamdulillah - اَلْحَمْدُ لِلَّٰهِ">
+          Alhamdulillah - اَلْحَمْدُ لِلَّٰهِ
         </option>
-        <option value="Allahu Akbar - الله أكبر">
-          Allahu Akbar - الله أكبر
+        <option value="Allahu Akbar - اللّٰهُ أَكْبَر">
+          Allahu Akbar - اللّٰهُ أَكْبَر
         </option>
-        <option value="La ilaha illallah - لا إله إلا الله">
-          La ilaha illallah - لا إله إلا الله
+        <option value="La ilaha illallah - لَا إِلَٰهَ إِلَّا ٱللَّٰهُ">
+          La ilaha illallah - لَا إِلَٰهَ إِلَّا ٱللَّٰهُ
         </option>
-        <option value="Astaghfirullah - أستغفر الله">
-          Astaghfirullah - أستغفر الله
+        <option value="Astaghfirullah - أَسْتَغْفِرُ ٱللّٰهَ">
+          Astaghfirullah - أَسْتَغْفِرُ ٱللّٰهَ
         </option>
       </select>
 

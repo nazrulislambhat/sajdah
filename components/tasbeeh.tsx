@@ -82,7 +82,6 @@ export default function TasbeehCounter() {
         <option value="Astaghfirullah">Astaghfirullah (أستغفر الله)</option>
       </select>
       <h2 className="text-3xl mb-4 whitespace-pre text-GreenSalahSync">
-        {' '}
         {selectedDhikr}
       </h2>
       <motion.h2

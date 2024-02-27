@@ -47,6 +47,16 @@ export default function TasbeehCounter() {
     }
   };
 
+  const countVariants = {
+    hidden: { opacity: 0, scale: 0.5, rotateY: -180 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      rotateY: 0,
+      transition: { duration: 0.5 },
+    },
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.5 }} // Initial animation when component loads
@@ -55,7 +65,10 @@ export default function TasbeehCounter() {
     >
       <motion.h2
         className="flex items-center flex-col justify-center w-24 min-w-24 text-8xl mb-4 text-BlueSalahSync"
-        animate={{ scale: [1, 1.1, 1] }} // Animation on every render
+        variants={countVariants}
+        initial="hidden"
+        animate="visible"
+        key={count}
       >
         {count}
       </motion.h2>

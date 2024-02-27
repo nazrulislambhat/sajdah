@@ -3,64 +3,50 @@ import { useState, useEffect, useCallback } from 'react';
 import Tasbih from '../public/Tasbih.png';
 import Image from 'next/image';
 import { motion } from 'framer-motion'; // Import motion from Framer Motion
+interface DhikrCounts {
+  [key: string]: number;
+}
 
 export default function TasbeehCounter() {
-  const [count, setCount] = useState(0);
   const [selectedDhikr, setSelectedDhikr] = useState('');
+  const [dhikrCounts, setDhikrCounts] = useState({});
 
   useEffect(() => {
-    const storedCount = localStorage.getItem('tasbeehCount');
-    if (storedCount) {
-      setCount(parseInt(storedCount, 10));
+    const storedCountsString = localStorage.getItem('dhikrCounts');
+    const storedCounts = storedCountsString
+      ? JSON.parse(storedCountsString)
+      : {};
+
+    if (storedCounts) {
+      setDhikrCounts(storedCounts);
     }
   }, []);
 
   useEffect(() => {
-    if (count === 33 || count === 66 || count === 100) {
-      playSoundAndVibrate();
-    }
-  }, [count]);
+    localStorage.setItem('dhikrCounts', JSON.stringify(dhikrCounts));
+  }, [dhikrCounts]);
 
   const incrementCount = () => {
-    const newCount = count + 1;
-    setCount(newCount);
-    localStorage.setItem('tasbeehCount', newCount.toString());
+    const newCounts: DhikrCounts = { ...dhikrCounts };
+    newCounts[selectedDhikr] = (newCounts[selectedDhikr] || 0) + 1;
+    setDhikrCounts(newCounts);
   };
 
   const resetCount = () => {
-    setCount(0);
-    localStorage.removeItem('tasbeehCount');
+    const newCounts = { ...dhikrCounts };
+    if (selectedDhikr && selectedDhikr in newCounts) {
+      delete (newCounts as any)[selectedDhikr];
+    }
+
+    setDhikrCounts(newCounts);
   };
 
   const handleDhikrChange = (event: any) => {
-    setSelectedDhikr(event.target.value);
+    const selectedValue = event.target.value;
+    setSelectedDhikr(selectedValue);
   };
 
-  const playSoundAndVibrate = () => {
-    playSound();
-    vibrate();
-  };
-
-  const playSound = () => {
-    const audio = new Audio('/ding.mp3');
-    audio.play();
-  };
-
-  const vibrate = () => {
-    if ('vibrate' in navigator) {
-      navigator.vibrate([200, 100, 200]); // Vibrate pattern (milliseconds)
-    }
-  };
-
-  const countVariants = {
-    hidden: { opacity: 0, scale: 0.5, rotateY: -180 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      rotateY: 0,
-      transition: { duration: 0.5 },
-    },
-  };
+  const count = (dhikrCounts as any)[selectedDhikr] || 0;
 
   return (
     <motion.div
@@ -145,3 +131,13 @@ export default function TasbeehCounter() {
     </motion.div>
   );
 }
+
+const countVariants = {
+  hidden: { opacity: 0, scale: 0.5, rotateY: -180 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    rotateY: 0,
+    transition: { duration: 0.5 },
+  },
+};

@@ -20,6 +20,7 @@ const config: Config = {
         PastelGreenSalahSync: '#c5ebc3',
         BlackSalahSync: '#151515',
         SkySalahSync: '#c8e0f4',
+        WhiteSalahSync: '#f7fff6',
       },
     },
   },

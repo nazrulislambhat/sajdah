@@ -88,7 +88,7 @@ export default function TasbeehCounter() {
         </option>
       </select>
 
-      <h2 className="text-2xl min-w-80 w-80 mb-4 text-wrap text-GreenSalahSync break-words">
+      <h2 className="text-2xl min-w-80 w-80 mb-4 text-wrap text-center text-GreenSalahSync break-words">
         {selectedDhikr}
       </h2>
       <motion.h2

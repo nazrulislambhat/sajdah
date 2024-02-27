@@ -1,3 +1,6 @@
+
+![SalahSync (Desktop Wallpaper)](https://github.com/nazrulislambhat/salahsync/assets/24292032/38d78d3d-43cc-4cb9-a8b4-87c55387471a)
+
 # SalahSync App
 
 Welcome to the SalahSync App! This app is designed to assist you in various aspects of your daily spiritual practices. Below are the features and functionalities provided by this application:

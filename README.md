@@ -20,7 +20,7 @@ Welcome to the SalaahSync App! This app is designed to assist you in various asp
 - Access the complete Quran in Uthmani font, allowing for easy reading and recitation.
 - Listen to high-quality MP3 audio recitations for an immersive Quranic experience.
 
-### Daily Hadees:
+### Daily Hadith:
 - Receive a daily dose of Hadith to enrich your knowledge and spiritual growth.
 - Explore different Hadiths each day to gain insights into the teachings of Islam.
 

@@ -1,4 +1,4 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss';
 const { nextui } = require('@nextui-org/react');
 
 const config: Config = {
@@ -10,10 +10,16 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      colors: {
+        PrimarySalahSync: '#d8f1a0',
+        SecondarySalahSync: '#fe5e41',
+        GreenSalahSync: '#00a878',
+        BlueSalahSync: '#05299e',
+        LightSalahSync: '#ede7e3',
+        YellowSalahSync: '#faf2a1',
+        PastelGreenSalahSync: '#c5ebc3',
+        BlackSalahSync: '#151515',
+        SkySalahSync: '#c8e0f4',
       },
     },
   },

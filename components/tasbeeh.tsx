@@ -48,9 +48,9 @@ export default function TasbeehCounter() {
   return (
     <div>
       <h1>Tasbeeh Counter</h1>
-      <p>Count: {count}</p>
-      <button onClick={incrementCount}>Increase Count</button>
-      <button onClick={resetCount}>Reset Count</button>
+      <h2 className="text-3xl">Count: {count}</h2>
+      <button className='text-xl' onClick={incrementCount}>+</button>
+      <button onClick={resetCount}>Reset</button>
     </div>
   );
 }

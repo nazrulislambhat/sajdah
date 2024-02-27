@@ -81,7 +81,7 @@ export default function TasbeehCounter() {
         </option>
         <option value="Astaghfirullah">Astaghfirullah (أستغفر الله)</option>
       </select>
-      <h2 className="flex items-center flex-col justify-center w-24 min-w-24 text-4xl mb-4 whitespace-pre overflow-hidden text-GreenSalahSync">
+      <h2 className="text-3xl mb-4 whitespace-pre text-GreenSalahSync">
         {' '}
         {selectedDhikr}
       </h2>

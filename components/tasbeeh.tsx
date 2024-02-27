@@ -53,7 +53,7 @@ export default function TasbeehCounter() {
       opacity: 1,
       scale: 1,
       rotateY: 0,
-      transition: { duration: 0.5 },
+      transition: { duration: .5 },
     },
   };
 
@@ -76,7 +76,7 @@ export default function TasbeehCounter() {
         className="text-6xl border-2 rounded-full p-12 max-h-10 max-w-10 text-LightSalahSync flex items-center flex-col justify-center hover:border-BlueSalahSync bg-SecondarySalahSync hover:bg-YellowSalahSync hover:text-BlueSalahSync transition duration-300 ease-in-out transform hover:scale-105 mb-4"
         onClick={incrementCount}
         whileHover={{ scale: 1.1 }} // Animation on hover
-        whileTap={{ scale: 0.9 }} // Animation on tap/click
+        whileTap={{ scale: 0.5 }} // Animation on tap/click
       >
         +
       </motion.button>

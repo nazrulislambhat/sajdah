@@ -71,7 +71,7 @@ export default function TasbeehCounter() {
       <select
         value={selectedDhikr}
         onChange={handleDhikrChange}
-        className="mb-4 bg-transparent py-4 px-2 text-BlueSalahSync border-2 border-BlueSalahSync rounded-full focus-visible:border-SecondarySalahSync"
+        className="mb-4 text-sm bg-transparent py-2 px-2 text-BlueSalahSync border-2 border-BlueSalahSync rounded focus-visible:border-SecondarySalahSync"
       >
         <option value="">Select Dhikr</option>
         <option value="Alhamdulillah">Alhamdulillah (الحمد لله)</option>
@@ -81,7 +81,10 @@ export default function TasbeehCounter() {
         </option>
         <option value="Astaghfirullah">Astaghfirullah (أستغفر الله)</option>
       </select>
-
+      <h2 className="flex items-center flex-col justify-center w-24 min-w-24 text-4xl mb-4 whitespace-pre overflow-hidden text-GreenSalahSync">
+        {' '}
+        {selectedDhikr}
+      </h2>
       <motion.h2
         className="flex items-center flex-col justify-center w-24 min-w-24 text-8xl mb-4 text-BlueSalahSync"
         variants={countVariants}

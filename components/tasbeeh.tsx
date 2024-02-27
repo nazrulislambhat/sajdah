@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'; // Import motion from Framer Motion
 
 export default function TasbeehCounter() {
   const [count, setCount] = useState(0);
+  const [selectedDhikr, setSelectedDhikr] = useState(null);
 
   useEffect(() => {
     const storedCount = localStorage.getItem('tasbeehCount');
@@ -31,6 +32,10 @@ export default function TasbeehCounter() {
     localStorage.removeItem('tasbeehCount');
   };
 
+  const handleDhikrChange = (event: any) => {
+    setSelectedDhikr(event.target.value);
+  };
+
   const playSoundAndVibrate = () => {
     playSound();
     vibrate();
@@ -53,7 +58,7 @@ export default function TasbeehCounter() {
       opacity: 1,
       scale: 1,
       rotateY: 0,
-      transition: { duration: .5 },
+      transition: { duration: 0.5 },
     },
   };
 
@@ -61,8 +66,22 @@ export default function TasbeehCounter() {
     <motion.div
       initial={{ opacity: 0, scale: 0.5 }} // Initial animation when component loads
       animate={{ opacity: 1, scale: 1 }} // Animation when component is rendered
-      className="min-w-96 w-96 px-48 py-8 flex items-center flex-col justify-center border-2 border-BlueSalahSync rounded"
+      className="min-w-96 w-96 px-48 py-12 flex items-center flex-col justify-center border-2 border-BlueSalahSync rounded"
     >
+      <select
+        value={selectedDhikr}
+        onChange={handleDhikrChange}
+        className="mb-4 bg-transparent py-4 px-2 text-BlueSalahSync border-2 border-BlueSalahSync rounded-full focus-visible:border-SecondarySalahSync"
+      >
+        <option value="">Select Dhikr</option>
+        <option value="Alhamdulillah">Alhamdulillah (الحمد لله)</option>
+        <option value="Allahu Akbar">Allahu Akbar (الله أكبر)</option>
+        <option value="La ilaha illallah">
+          La ilaha illallah (لا إله إلا الله)
+        </option>
+        <option value="Astaghfirullah">Astaghfirullah (أستغفر الله)</option>
+      </select>
+
       <motion.h2
         className="flex items-center flex-col justify-center w-24 min-w-24 text-8xl mb-4 text-BlueSalahSync"
         variants={countVariants}
@@ -73,14 +92,38 @@ export default function TasbeehCounter() {
         {count}
       </motion.h2>
       <motion.button
-        className="text-6xl border-2 rounded-full p-12 max-h-10 max-w-10 text-LightSalahSync flex items-center flex-col justify-center hover:border-BlueSalahSync bg-SecondarySalahSync hover:bg-YellowSalahSync hover:text-BlueSalahSync transition duration-300 ease-in-out transform hover:scale-105 mb-4"
+        className="text-6xl border-2 rounded-full p-16 max-h-10 max-w-10 text-LightSalahSync flex items-center flex-col justify-center bg-GreenSalahSync hover:bg-BlueSalahSync hover:text-SkySalahSync transition duration-300 ease-in-out transform hover:scale-105 mb-6"
         onClick={incrementCount}
         whileHover={{ scale: 1.1 }} // Animation on hover
         whileTap={{ scale: 0.5 }} // Animation on tap/click
       >
         +
       </motion.button>
-      <button onClick={resetCount}>Reset</button>
+
+      <button
+        onClick={resetCount}
+        className="box-border relative z-30 inline-flex items-center justify-center w-auto px-8 py-3 overflow-hidden font-bold text-LightSalahSync transition-all duration-300 bg-SecondarySalahSync rounded-md cursor-pointer group ring-offset-2 ring-1 ring-PastelRedSalahSync ring-offset-PastelRedSalahSync hover:ring-offset-PastelRedSalahSync ease focus:outline-none"
+      >
+        <span className="absolute bottom-0 right-0 w-8 h-20 -mb-8 -mr-5 transition-all duration-300 ease-out transform rotate-45 translate-x-1 bg-LightSalahSync opacity-10 group-hover:translate-x-0"></span>
+        <span className="absolute top-0 left-0 w-20 h-8 -mt-1 -ml-12 transition-all duration-300 ease-out transform -rotate-45 -translate-x-1 bg-LightSalahSync opacity-10 group-hover:translate-x-0"></span>
+        <span className="relative z-20 flex items-center text-sm">
+          <svg
+            className="relative w-5 h-5 mr-2 text-LightSalahSync"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 10V3L4 14h7v7l9-11h-7z"
+            ></path>
+          </svg>
+          Clear
+        </span>
+      </button>
     </motion.div>
   );
 }

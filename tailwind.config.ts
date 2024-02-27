@@ -18,6 +18,7 @@ const config: Config = {
         LightSalahSync: '#ede7e3',
         YellowSalahSync: '#faf2a1',
         PastelGreenSalahSync: '#c5ebc3',
+        PastelRedSalahSync: '#f87666',
         BlackSalahSync: '#151515',
         SkySalahSync: '#c8e0f4',
         WhiteSalahSync: '#f7fff6',

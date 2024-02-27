@@ -1,6 +1,9 @@
-// pages/index.js
 'use client';
 import { useState, useEffect } from 'react';
+import QuranTasbih from '../public/QuranTasbih.jpg';
+import Tasbih from '../public/Tasbih.png';
+import Image from 'next/image';
+import { Button } from '@nextui-org/react';
 
 export default function TasbeehCounter() {
   const [count, setCount] = useState(0);
@@ -31,7 +34,6 @@ export default function TasbeehCounter() {
 
   const playSoundAndVibrate = () => {
     playSound();
-    vibrate();
   };
 
   const playSound = () => {
@@ -39,17 +41,17 @@ export default function TasbeehCounter() {
     audio.play();
   };
 
-  const vibrate = () => {
-    if ('vibrate' in navigator) {
-      navigator.vibrate([200, 100, 200]); // Vibrate pattern (milliseconds)
-    }
-  };
-
   return (
-    <div>
-      <h1>Tasbeeh Counter</h1>
-      <h2 className="text-3xl">Count: {count}</h2>
-      <button className='text-xl' onClick={incrementCount}>+</button>
+    <div className="tasbeeh  min-w-96 w-96 px-48 overflow-hidden py-8 flex items-center flex-col justify-center border-2 border-BlackSalahSync rounded">
+      <h2 className="flex items-center flex-col justify-center w-24 min-w-24 text-8xl mb-4 text-BlueSalahSync">
+        {count}
+      </h2>
+      <button
+        className="text-6xl border-2 rounded-full p-12 max-h-10 max-w-10 text-LightSalahSync flex items-center flex-col justify-center hover:border-BlueSalahSync bg-SecondarySalahSync hover:bg-YellowSalahSync hover:text-BlueSalahSync transition duration-300 ease-in-out transform hover:scale-105 mb-4"
+        onClick={incrementCount}
+      >
+        +
+      </button>
       <button onClick={resetCount}>Reset</button>
     </div>
   );

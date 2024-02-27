@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
-import { Comfortaa } from 'next/font/google';
+import { Comfortaa, Rubik } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
 
 const comfortaa = Comfortaa({ subsets: ['latin'] });
+const notoSans = Rubik({ subsets: ['arabic'] });
 
 export const metadata: Metadata = {
   title: 'SalahSync - Your Personal Deen Companion',
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="light max-width bg-background">
-      <body className={`${comfortaa.className}`}>
+      <body className={`${notoSans.className}`}>
         <Providers>{children}</Providers>
       </body>
     </html>

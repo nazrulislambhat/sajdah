@@ -66,7 +66,7 @@ export default function TasbeehCounter() {
         <option value="Allahu Akbar - الله أكبر">
           Allahu Akbar - الله أكبر
         </option>
-        <option value="La aaaaaaaaaasasaasqawqwesasassdfaaaaaaaaa ilaha illallah - لا إله إلا الله">
+        <option value="La ilaha illallah - لا إله إلا الله">
           La ilaha illallah - لا إله إلا الله
         </option>
         <option value="Astaghfirullah - أستغفر الله">

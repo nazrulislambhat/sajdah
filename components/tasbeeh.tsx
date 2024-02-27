@@ -1,9 +1,7 @@
 'use client';
-import { useState, useEffect } from 'react';
-import QuranTasbih from '../public/QuranTasbih.jpg';
+import { useState, useEffect, useCallback } from 'react';
 import Tasbih from '../public/Tasbih.png';
 import Image from 'next/image';
-import { Button } from '@nextui-org/react';
 
 export default function TasbeehCounter() {
   const [count, setCount] = useState(0);
@@ -34,6 +32,7 @@ export default function TasbeehCounter() {
 
   const playSoundAndVibrate = () => {
     playSound();
+    vibrate();
   };
 
   const playSound = () => {
@@ -41,8 +40,14 @@ export default function TasbeehCounter() {
     audio.play();
   };
 
+  const vibrate = () => {
+    if ('vibrate' in navigator) {
+      navigator.vibrate([200, 100, 200]); // Vibrate pattern (milliseconds)
+    }
+  };
+
   return (
-    <div className="tasbeeh  min-w-96 w-96 px-48 overflow-hidden py-8 flex items-center flex-col justify-center border-2 border-BlackSalahSync rounded">
+    <div className="min-w-96 w-96 px-48 py-8 flex items-center flex-col justify-center border-2 border-BlackSalahSync rounded">
       <h2 className="flex items-center flex-col justify-center w-24 min-w-24 text-8xl mb-4 text-BlueSalahSync">
         {count}
       </h2>

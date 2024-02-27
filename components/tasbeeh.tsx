@@ -71,17 +71,24 @@ export default function TasbeehCounter() {
       <select
         value={selectedDhikr}
         onChange={handleDhikrChange}
-        className="mb-4 text-sm bg-transparent py-2 px-2 text-BlueSalahSync border-2 border-BlueSalahSync rounded focus-visible:border-SecondarySalahSync"
+        className="mb-4 text-xs bg-transparent py-2 px-2 text-BlueSalahSync border-2 border-BlueSalahSync rounded focus-visible:border-SecondarySalahSync"
       >
         <option value="">Select Dhikr</option>
-        <option value="Alhamdulillah">Alhamdulillah (الحمد لله)</option>
-        <option value="Allahu Akbar">Allahu Akbar (الله أكبر)</option>
-        <option value="La ilaha illallah">
-          La ilaha illallah (لا إله إلا الله)
+        <option value="Alhamdulillah - الحمد لله">
+          Alhamdulillah - الحمد لله
         </option>
-        <option value="Astaghfirullah">Astaghfirullah (أستغفر الله)</option>
+        <option value="Allahu Akbar - الله أكبر">
+          Allahu Akbar - الله أكبر
+        </option>
+        <option value="La aaaaaaaaaasasaasqawqwesasassdfaaaaaaaaa ilaha illallah - لا إله إلا الله">
+          La ilaha illallah - لا إله إلا الله
+        </option>
+        <option value="Astaghfirullah - أستغفر الله">
+          Astaghfirullah - أستغفر الله
+        </option>
       </select>
-      <h2 className="text-3xl mb-4 whitespace-pre text-GreenSalahSync">
+
+      <h2 className="text-2xl min-w-80 w-80 mb-4 text-wrap text-GreenSalahSync break-words">
         {selectedDhikr}
       </h2>
       <motion.h2
@@ -94,17 +101,26 @@ export default function TasbeehCounter() {
         {count}
       </motion.h2>
       <motion.button
-        className="text-6xl border-2 rounded-full p-16 max-h-10 max-w-10 text-LightSalahSync flex items-center flex-col justify-center bg-GreenSalahSync hover:bg-BlueSalahSync hover:text-SkySalahSync transition duration-300 ease-in-out transform hover:scale-105 mb-6"
+        className={`text-6xl border-2 rounded-full p-16 max-h-10 max-w-10 text-LightSalahSync flex items-center flex-col justify-center bg-GreenSalahSync hover:bg-BlueSalahSync hover:text-SkySalahSync transition duration-300 ease-in-out transform hover:scale-105 mb-6 ${
+          !selectedDhikr && 'opacity-50'
+        }`}
         onClick={incrementCount}
         whileHover={{ scale: 1.1 }} // Animation on hover
-        whileTap={{ scale: 0.5 }} // Animation on tap/click
+        whileTap={{ scale: 0.7 }} // Animation on tap/click
+        disabled={!selectedDhikr}
+        style={{ pointerEvents: selectedDhikr ? 'auto' : 'none' }}
       >
         +
       </motion.button>
 
-      <button
+      <motion.button
         onClick={resetCount}
-        className="box-border relative z-30 inline-flex items-center justify-center w-auto px-8 py-3 overflow-hidden font-semibold text-LightSalahSync transition-all duration-300 bg-SecondarySalahSync rounded-md cursor-pointer group ring-offset-2 ring-1 ring-PastelRedSalahSync ring-offset-PastelRedSalahSync hover:ring-offset-PastelRedSalahSync ease focus:outline-none"
+        whileHover={{ scale: 1.1 }} // Animation on hover
+        whileTap={{ scale: 0.7 }} // Animation on tap/click
+        style={{ pointerEvents: count ? 'auto' : 'none' }}
+        className={`box-border relative z-30 inline-flex items-center justify-center w-auto px-8 py-3 overflow-hidden font-semibold text-LightSalahSync transition-all duration-300 bg-SecondarySalahSync rounded-md cursor-pointer group ring-offset-2 ring-1 ring-PastelRedSalahSync ring-offset-PastelRedSalahSync hover:ring-offset-PastelRedSalahSync ease focus:outline-none${
+          !count && 'opacity-50'
+        }`}
       >
         <span className="absolute bottom-0 right-0 w-8 h-20 -mb-8 -mr-5 transition-all duration-300 ease-out transform rotate-45 translate-x-1 bg-LightSalahSync opacity-10 group-hover:translate-x-0"></span>
         <span className="absolute top-0 left-0 w-20 h-8 -mt-1 -ml-12 transition-all duration-300 ease-out transform -rotate-45 -translate-x-1 bg-LightSalahSync opacity-10 group-hover:translate-x-0"></span>
@@ -125,7 +141,7 @@ export default function TasbeehCounter() {
           </svg>
           Clear
         </span>
-      </button>
+      </motion.button>
     </motion.div>
   );
 }

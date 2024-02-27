@@ -12,11 +12,11 @@ const config: Config = {
     extend: {
       colors: {
         PrimarySalahSync: '#3423A6',
-        SecondarySalahSync: '#171717',
+        SecondarySalahSync: '#63A375',
         LightSalahSync: '#ede7e3',
         WhiteSalahSync: '#f7fff6',
-        GreenSalahSync: '#63A375',
-        RedSalahSync: '#D57A66',
+        TertiarySalahSync: '#171717',
+        RedSalahSync: '#D00000',
       },
     },
   },

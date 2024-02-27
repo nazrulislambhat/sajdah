@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex justify-center items-center flex-col bg-LightSalahSync ">
+    <main className="min-h-screen  bg-LightSalahSync ">
       <TasbeehCounter />
       <Footer />
     </main>

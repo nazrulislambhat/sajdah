@@ -60,7 +60,7 @@ Welcome to the SalahSync App! This app is designed to assist you in various aspe
 
 ## Installation:
 
-- Vist out website [salahSync](https://salahsync.com) to download/use the app.
+- Vist out website [SalahSync](https://salahsync.com) to download/use the app.
 - Download and install the ISalahSync App from the App Store (for iOS) or Google Play Store (for Android). - Coming Soon!
 - Follow the on-screen instructions for initial setup and permissions.
 - Enjoy the various features provided to enhance your spiritual journey.

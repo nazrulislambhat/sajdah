@@ -8,7 +8,6 @@ export default function Home() {
   return (
     <main className="min-h-screen boxed bg-LightSalahSync">
       <TasbeehCounter />
-      <Footer />
     </main>
   );
 }

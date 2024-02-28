@@ -57,11 +57,18 @@ export default function TasbeehCounter() {
 
   const playSoundAndVibrate = () => {
     playSound();
+    vibrate();
   };
 
   const playSound = () => {
     const audio = new Audio('/ding.mp3');
     audio.play();
+  };
+
+  const vibrate = () => {
+    if ('vibrate' in navigator) {
+      navigator.vibrate(200);
+    }
   };
 
   return (

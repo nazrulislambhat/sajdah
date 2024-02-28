@@ -93,16 +93,10 @@ export default function TasbeehCounter() {
         className="mb-4 text-xs bg-transparent py-2 px-2 text-PrimarySalahSync border-2 border-PrimarySalahSync rounded focus-visible:border-SecondarySalahSync"
       >
         <option value="">Select Dhikr</option>
-        <option value="اَلْحَمْدُ لِلَّٰهِ">اَلْحَمْدُ لِلَّٰهِ</option>
-        <option value="اللّٰهُ أَكْبَر">اللّٰهُ أَكْبَر</option>
-        <option value="لَا إِلَٰهَ إِلَّا ٱللَّٰهُ">
-          لَا إِلَٰهَ إِلَّا ٱللَّٰهُ
-        </option>
-        <option value="أَسْتَغْفِرُ ٱللّٰهَ">أَسْتَغْفِرُ ٱللّٰهَ</option>
-        <option value="حَسْبِيَ اللَّهُ لاَ إِلَهَ إِلاَّ هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ">
-          حَسْبِيَ اللَّهُ لاَ إِلَهَ إِلاَّ هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ
-          رَبُّ الْعَرْشِ الْعَظِيمِ
-        </option>
+        <option value="Alhamdulillah">Alhamdulillah </option>
+        <option value="Allahu Akbar">Allahu Akbar</option>
+        <option value="La Ilaha Illa Allah">La Ilaha Illa Allah </option>
+        <option value="Astaghfirullah ">Astaghfirullah </option>
       </select>
 
       <h2 className="text-2xl min-w-80 w-80 mb-4 text-wrap flex items-center justify-center text-center text-SecondarySalahSync break-words">

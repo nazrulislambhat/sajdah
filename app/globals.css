@@ -7,6 +7,9 @@
     text-wrap: balance;
   }
 }
+body {
+  background-color: #f7fff6;
+}
 .boxed {
   max-width: 1920px;
   margin: 0 auto;

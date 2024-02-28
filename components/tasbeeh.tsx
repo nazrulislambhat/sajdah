@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 import Tasbih from '../public/Tasbih.png';
 import Image from 'next/image';
 import { motion } from 'framer-motion'; // Import motion from Framer Motion
+
 interface DhikrCounts {
   [key: string]: number;
 }
@@ -47,6 +48,21 @@ export default function TasbeehCounter() {
   };
 
   const count = (dhikrCounts as any)[selectedDhikr] || 0;
+
+  useEffect(() => {
+    if (count === 33 || count === 66 || count === 100) {
+      playSoundAndVibrate();
+    }
+  }, [count]);
+
+  const playSoundAndVibrate = () => {
+    playSound();
+  };
+
+  const playSound = () => {
+    const audio = new Audio('/ding.mp3');
+    audio.play();
+  };
 
   return (
     <motion.div

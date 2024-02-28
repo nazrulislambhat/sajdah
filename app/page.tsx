@@ -10,7 +10,7 @@ export default function Home() {
     <main className="min-h-screen boxed bg-LightSalahSync flex flex-col gap-4 xl:gap-8 items-center">
       <RamadanModeSwitch />
       <TasbeehCounter />
-      <HadithCards />
+      {/* <HadithCards /> */}
     </main>
   );
 }

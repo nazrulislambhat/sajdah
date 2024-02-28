@@ -103,7 +103,7 @@ export default function TasbeehCounter() {
         {count}
       </motion.h2>
       <motion.button
-        className={`text-6xl border-2 rounded-full p-12 max-h-8 max-w-8 text-LightSalahSync flex items-center flex-col justify-center bg-PrimarySalahSync transition duration-300 ease-in-out transform hover:scale-105 mb-6 ${
+        className={`text-6xl rounded-full p-12 max-h-8 max-w-8 text-LightSalahSync flex items-center flex-col justify-center bg-PrimarySalahSync transition duration-300 ease-in-out transform hover:scale-105 mb-6 ${
           !selectedDhikr && 'opacity-50'
         }`}
         onClick={incrementCount}

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="light max-width bg-background">
-      <body className={`${notoSans.className}`}>
+      <body className={`${comfortaa.className}`}>
         <Providers>{children}</Providers>
       </body>
     </html>

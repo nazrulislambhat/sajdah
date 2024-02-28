@@ -57,7 +57,7 @@ export default function App() {
   ];
 
   return (
-    <div className="gap-2 grid grid-cols-2 sm:grid-cols-4 border-2 border-PrimarySalahSync px-16 py-24 rounded-lg">
+    <div className="gap-2 grid grid-cols-2 sm:grid-cols-4 border-2 bg-WhiteSalahSync border-PrimarySalahSync px-16 py-24 rounded-lg">
       {list.map((item, index) => (
         <Card
           shadow="sm"
@@ -65,19 +65,20 @@ export default function App() {
           isPressable
           onPress={() => console.log('item pressed')}
         >
-          <CardBody className="overflow-visible p-0">
+          <CardBody className="overflow-visible p-0 bg-SecondarySalahSync">
             <Image
-              shadow="sm"
-              radius="sm"
+              shadow="none"
+              radius="none"
               width="100%"
               alt={item.title}
-              className="w-full object-cover h-[120px] max-w-[200px]"
+              className="w-full object-cover h-[120px] max-w-[200px] "
               src={imageUrls[index % imageUrls.length]} // Using modulus to ensure the image URLs repeat if there are fewer images than list items
             />
           </CardBody>
-          <CardFooter className="text-small justify-between">
-            <b>{item.title}</b>
-            <p className="text-default-500">{item.price}</p>
+          <CardFooter className="text-small justify-between bg-YellowSalahSync">
+            <p className="text-xs font-bold py-2 text-PrimarySalahSync">
+              {item.title}
+            </p>
           </CardFooter>
         </Card>
       ))}

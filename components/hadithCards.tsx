@@ -68,10 +68,10 @@ export default function App() {
           <CardBody className="overflow-visible p-0">
             <Image
               shadow="sm"
-              radius="lg"
+              radius="sm"
               width="100%"
               alt={item.title}
-              className="w-full object-cover h-[140px]"
+              className="w-full object-cover h-[120px] max-w-[200px]"
               src={imageUrls[index % imageUrls.length]} // Using modulus to ensure the image URLs repeat if there are fewer images than list items
             />
           </CardBody>

@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 import Tasbih from '../public/Tasbih.png';
 import Image from 'next/image';
 import { motion } from 'framer-motion'; // Import motion from Framer Motion
-
+import SpeakerIcon from '../public/Speaker.png';
 interface DhikrCounts {
   [key: string]: number;
 }
@@ -71,6 +71,16 @@ export default function TasbeehCounter() {
     }
   };
 
+  // const readSelectedDhikr = () => {
+  //   if ('speechSynthesis' in window) {
+  //     const speech = new SpeechSynthesisUtterance(selectedDhikr);
+  //     speech.lang = 'ar'; // Set the language to Arabic if needed
+  //     speechSynthesis.speak(speech);
+  //   } else {
+  //     console.log('Text-to-speech not supported');
+  //   }
+  // };
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.5 }} // Initial animation when component loads
@@ -83,23 +93,38 @@ export default function TasbeehCounter() {
         className="mb-4 text-xs bg-transparent py-2 px-2 text-PrimarySalahSync border-2 border-PrimarySalahSync rounded focus-visible:border-SecondarySalahSync"
       >
         <option value="">Select Dhikr</option>
-        <option value="Alhamdulillah - اَلْحَمْدُ لِلَّٰهِ">
-          Alhamdulillah - اَلْحَمْدُ لِلَّٰهِ
+        <option value="اَلْحَمْدُ لِلَّٰهِ">
+          اَلْحَمْدُ لِلَّٰهِ
         </option>
-        <option value="Allahu Akbar - اللّٰهُ أَكْبَر">
-          Allahu Akbar - اللّٰهُ أَكْبَر
+        <option value="اللّٰهُ أَكْبَر">
+          اللّٰهُ أَكْبَر
         </option>
-        <option value="La ilaha illallah - لَا إِلَٰهَ إِلَّا ٱللَّٰهُ">
-          La ilaha illallah - لَا إِلَٰهَ إِلَّا ٱللَّٰهُ
+        <option value="لَا إِلَٰهَ إِلَّا ٱللَّٰهُ">
+         لَا إِلَٰهَ إِلَّا ٱللَّٰهُ
         </option>
-        <option value="Astaghfirullah - أَسْتَغْفِرُ ٱللّٰهَ">
-          Astaghfirullah - أَسْتَغْفِرُ ٱللّٰهَ
+        <option value="أَسْتَغْفِرُ ٱللّٰهَ">
+          أَسْتَغْفِرُ ٱللّٰهَ
+        </option>
+        <option value="حَسْبِيَ اللَّهُ لاَ إِلَهَ إِلاَّ هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ">
+          حَسْبِيَ اللَّهُ لاَ إِلَهَ إِلاَّ هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ
+          رَبُّ الْعَرْشِ الْعَظِيمِ
         </option>
       </select>
 
-      <h2 className="text-2xl min-w-80 w-80 mb-4 text-wrap text-center text-SecondarySalahSync break-words">
+      <h2 className="text-2xl min-w-80 w-80 mb-4 text-wrap flex items-center justify-center text-center text-SecondarySalahSync break-words">
         {selectedDhikr}
+        {/* {selectedDhikr && ( // Render the button only when selectedDhikr is not empty
+          <button className="speaker-icon" onClick={readSelectedDhikr}>
+            <Image
+              src={SpeakerIcon}
+              alt="Speaker icon"
+              width={16}
+              height={16}
+            />
+          </button>
+        )} */}
       </h2>
+
       <motion.h2
         className="flex items-center flex-col justify-center w-24 min-w-24 text-8xl mb-4 text-PrimarySalahSync"
         variants={countVariants}

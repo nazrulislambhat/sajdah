@@ -93,18 +93,12 @@ export default function TasbeehCounter() {
         className="mb-4 text-xs bg-transparent py-2 px-2 text-PrimarySalahSync border-2 border-PrimarySalahSync rounded focus-visible:border-SecondarySalahSync"
       >
         <option value="">Select Dhikr</option>
-        <option value="اَلْحَمْدُ لِلَّٰهِ">
-          اَلْحَمْدُ لِلَّٰهِ
-        </option>
-        <option value="اللّٰهُ أَكْبَر">
-          اللّٰهُ أَكْبَر
-        </option>
+        <option value="اَلْحَمْدُ لِلَّٰهِ">اَلْحَمْدُ لِلَّٰهِ</option>
+        <option value="اللّٰهُ أَكْبَر">اللّٰهُ أَكْبَر</option>
         <option value="لَا إِلَٰهَ إِلَّا ٱللَّٰهُ">
-         لَا إِلَٰهَ إِلَّا ٱللَّٰهُ
+          لَا إِلَٰهَ إِلَّا ٱللَّٰهُ
         </option>
-        <option value="أَسْتَغْفِرُ ٱللّٰهَ">
-          أَسْتَغْفِرُ ٱللّٰهَ
-        </option>
+        <option value="أَسْتَغْفِرُ ٱللّٰهَ">أَسْتَغْفِرُ ٱللّٰهَ</option>
         <option value="حَسْبِيَ اللَّهُ لاَ إِلَهَ إِلاَّ هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ">
           حَسْبِيَ اللَّهُ لاَ إِلَهَ إِلاَّ هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ
           رَبُّ الْعَرْشِ الْعَظِيمِ
@@ -120,6 +114,7 @@ export default function TasbeehCounter() {
               alt="Speaker icon"
               width={16}
               height={16}
+              className="min-w-4 min-h-4"
             />
           </button>
         )} */}

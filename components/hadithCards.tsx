@@ -14,7 +14,7 @@ export default function App() {
         'https://api.unsplash.com/photos/random?query=islamic&count=8&client_id=UM26ylfxkEFSGouPqOkDSL3eps9NPFHorVByglnKUYI'
       );
       const data = await response.json();
-      const urls = data.map((item) => item.urls.regular);
+      const urls = data.map((item: any) => item.urls.regular);
       setImageUrls(urls);
     } catch (error) {
       console.error('Error fetching images:', error);

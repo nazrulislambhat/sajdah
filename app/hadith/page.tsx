@@ -26,9 +26,8 @@ export default function App() {
   const [hadiths, setHadiths] = useState([]);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedHadith, setSelectedHadith] = useState<Hadith | null>(null);
-  const [modalPlacement, setModalPlacement] = React.useState('auto');
 
-  useEffect(() => {
+    useEffect(() => {
     fetchIslamicImages();
     fetchHadiths();
   }, []);

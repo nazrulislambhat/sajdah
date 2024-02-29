@@ -88,7 +88,7 @@ export default function App() {
                 key={index}
                 isPressable
                 onPress={() => handleCardClick(index)}
-                className="max-w-[200px] h-full flex flex-col"
+                className="max-w-[200px] xl:max-w-[300px] h-full flex flex-col"
               >
                 <CardBody className="overflow-visible p-1">
                   <Image

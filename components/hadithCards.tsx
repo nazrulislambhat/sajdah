@@ -3,9 +3,11 @@ import { Card, CardBody, CardFooter, Image } from '@nextui-org/react';
 
 export default function App() {
   const [imageUrls, setImageUrls] = useState([]);
+  const [hadiths, setHadiths] = useState([]);
 
   useEffect(() => {
     fetchIslamicImages();
+    fetchHadiths();
   }, []);
 
   const fetchIslamicImages = async () => {
@@ -14,74 +16,61 @@ export default function App() {
         'https://api.unsplash.com/photos/random?query=islamic&count=8&client_id=UM26ylfxkEFSGouPqOkDSL3eps9NPFHorVByglnKUYI'
       );
       const data = await response.json();
-      const urls = data.map((item: any) => item.urls.regular);
+      const urls = data.map((item) => item.urls.regular);
       setImageUrls(urls);
     } catch (error) {
       console.error('Error fetching images:', error);
     }
   };
 
-  const list = [
-    {
-      title: 'Orange',
-      price: '$5.50',
-    },
-    {
-      title: 'Tangerine',
-      price: '$3.00',
-    },
-    {
-      title: 'Raspberry',
-      price: '$10.00',
-    },
-    {
-      title: 'Lemon',
-      price: '$5.30',
-    },
-    {
-      title: 'Avocado',
-      price: '$15.70',
-    },
-    {
-      title: 'Lemon 2',
-      price: '$8.00',
-    },
-    {
-      title: 'Banana',
-      price: '$7.50',
-    },
-    {
-      title: 'Watermelon',
-      price: '$12.20',
-    },
-  ];
+  const fetchHadiths = async () => {
+    try {
+      const response = await fetch('/hadith.json');
+      const data = await response.json();
+      setHadiths(data);
+    } catch (error) {
+      console.error('Error fetching hadiths:', error);
+    }
+  };
+
+  const shuffleArray = (array) => {
+    // Shuffling the array using Fisher-Yates algorithm
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
+
+  const shuffledHadiths = shuffleArray(hadiths);
 
   return (
-    <div className="border-PrimarySalahSync border-2 bg-WhiteSalahSync  rounded-lg flex flex-col items-center justify-center pt-6">
+    <div className="border-PrimarySalahSync border-2 bg-WhiteSalahSync rounded-lg flex flex-col items-center justify-center pt-6">
       <h2 className="text-PrimarySalahSync font-bold text-4xl">
         Daily Hadiths
       </h2>
       <div className="gap-4 grid grid-cols-2 sm:grid-cols-4 px-16 pb-12 pt-10 ">
-        {list.map((item, index) => (
+        {shuffledHadiths.map((hadith, index) => (
           <Card
             shadow="sm"
             key={index}
             isPressable
             onPress={() => console.log('item pressed')}
+            className="w-[200px]"
           >
-            <CardBody className="overflow-visible p-0 ">
+            <CardBody className="overflow-visible p-0">
               <Image
                 shadow="none"
                 radius="none"
                 width="100%"
-                alt={item.title}
-                className="w-full object-cover h-[120px] max-w-[200px] "
-                src={imageUrls[index % imageUrls.length]} // Using modulus to ensure the image URLs repeat if there are fewer images than list items
+                alt={hadith.title}
+                className="w-full object-cover h-[120px] min-w-[200px] max-w-[200px]"
+                src={imageUrls[index % imageUrls.length]}
               />
             </CardBody>
             <CardFooter className="text-small justify-between bg-LightSalahSync">
               <p className="text-xs font-bold py-2 text-TerinarySalahSync">
-                {item.title}
+                {hadith.title}
               </p>
             </CardFooter>
           </Card>

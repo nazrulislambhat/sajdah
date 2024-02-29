@@ -16,7 +16,7 @@ export default function App() {
         'https://api.unsplash.com/photos/random?query=islamic&count=8&client_id=UM26ylfxkEFSGouPqOkDSL3eps9NPFHorVByglnKUYI'
       );
       const data = await response.json();
-      const urls = data.map((item) => item.urls.regular);
+      const urls = data.map((item:any) => item.urls.regular);
       setImageUrls(urls);
     } catch (error) {
       console.error('Error fetching images:', error);
@@ -33,7 +33,7 @@ export default function App() {
     }
   };
 
-  const shuffleArray = (array) => {
+  const shuffleArray = (array:any) => {
     // Shuffling the array using Fisher-Yates algorithm
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -45,11 +45,11 @@ export default function App() {
   const shuffledHadiths = shuffleArray(hadiths);
 
   return (
-    <div className="border-PrimarySalahSync border-2 bg-WhiteSalahSync rounded-lg flex flex-col items-center justify-center pt-6">
-      <h2 className="text-PrimarySalahSync font-bold text-4xl">
-        Daily Hadiths
+    <div className="border-PrimarySalahSync border-2 w-fit bg-WhiteSalahSync rounded-lg flex flex-col items-center justify-center pt-6">
+      <h2 className="text-PrimarySalahSync font-bold text-4xl flex flex-col items-center gap-4">
+        Daily Hadiths <span className="text-xs text-PrimarySalahSync">Click to read the full hadith</span>
       </h2>
-      <div className="gap-4 grid grid-cols-2 sm:grid-cols-4 px-16 pb-12 pt-10 ">
+      <div className="gap-4 grid xl:grid-cols-2 sm:grid-cols-4 px-16 pb-12 pt-10 ">
         {shuffledHadiths.map((hadith, index) => (
           <Card
             shadow="sm"
@@ -64,7 +64,7 @@ export default function App() {
                 radius="none"
                 width="100%"
                 alt={hadith.title}
-                className="w-full object-cover h-[120px] min-w-[200px] max-w-[200px]"
+                className="w-full object-cover h-[100px]  xl:h-[120px] xl:min-w-[200px] xl:max-w-[200px]"
                 src={imageUrls[index % imageUrls.length]}
               />
             </CardBody>

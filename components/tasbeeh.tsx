@@ -71,7 +71,7 @@ export default function TasbeehCounter() {
     }
   };
 
-  // const readSelectedDhikr = () => {
+  // const readSelectedDhikr = () => {  
   //   if ('speechSynthesis' in window) {
   //     const speech = new SpeechSynthesisUtterance(selectedDhikr);
   //     speech.lang = 'ar'; // Set the language to Arabic if needed

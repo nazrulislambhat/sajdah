@@ -71,16 +71,16 @@ export default function App() {
   console.log('selectedHadith:', selectedHadith);
 
   return (
-    <div className="border-PrimarySalahSync border-2 w-fit bg-WhiteSalahSync rounded-lg flex flex-col items-center justify-center pt-6">
+    <div className="border-PrimarySalahSync px-8 py-12 border-2 w-fit xl:w-full bg-WhiteSalahSync rounded-lg flex flex-col items-center justify-center pt-6">
       <h2 className="text-PrimarySalahSync font-bold text-4xl flex flex-col items-center gap-4">
         Daily Hadiths{' '}
         <span className="text-xs text-PrimarySalahSync">
           Click the card to read the full hadith
         </span>
       </h2>
-      <div className="gap-4 grid xl:grid-cols-2 sm:grid-cols-4 px-12 pb-12 pt-10">
+      <div className="gap-4 grid xl:grid-cols-4 sm:grid-cols-4 px-12 pb-12 pt-10">
         {shuffledHadiths
-          .slice(0, 8)
+          .slice(0, 16)
           .map(
             (hadith: { title: string; reference: string }, index: number) => (
               <Card
@@ -88,7 +88,7 @@ export default function App() {
                 key={index}
                 isPressable
                 onPress={() => handleCardClick(index)}
-                className="max-w-[200px] xl:max-w-[300px] h-full flex flex-col"
+                className="max-w-full xl:max-w-[300px] h-full flex flex-col"
               >
                 <CardBody className="overflow-visible p-1">
                   <Image
@@ -116,7 +116,7 @@ export default function App() {
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        className="hadith-modal"
+        className="hadith-modal absolute top-[50%]"
       >
         <ModalContent>
           <ModalBody className="bg-LightSalahSync p-4 rounded-xl">

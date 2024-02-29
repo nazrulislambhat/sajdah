@@ -18,7 +18,7 @@ interface Hadith {
   english: string;
 }
 
-import { createClient, ErrorResponse, PhotoResponse } from 'pexels';
+import { createClient, ErrorResponse } from 'pexels';
 
 const client = createClient(
   '14shsoo6uqiYI2yAM9QYHkMapQq5RLd8Dl46uMmmcw6PedS0nlKorTeW'
@@ -42,10 +42,10 @@ export default function App() {
       const response = await client.photos.search({ query, per_page: perPage });
 
       if ((response as ErrorResponse).error) {
-        throw new Error((response as ErrorResponse).error.message);
+        throw new Error((response as ErrorResponse).error);
       }
 
-      const photos = (response as PhotoResponse).photos;
+      const photos = (response as any).photos;
       const urls = photos.map((photo: any) => photo.src.original);
       setImageUrls(urls);
     } catch (error) {

@@ -18,6 +18,12 @@ interface Hadith {
   english: string;
 }
 
+import { createClient, ErrorResponse, PhotoResponse } from 'pexels';
+
+const client = createClient(
+  '14shsoo6uqiYI2yAM9QYHkMapQq5RLd8Dl46uMmmcw6PedS0nlKorTeW'
+);
+
 export default function App() {
   const [imageUrls, setImageUrls] = useState([]);
   const [hadiths, setHadiths] = useState([]);
@@ -31,11 +37,16 @@ export default function App() {
 
   const fetchIslamicImages = async () => {
     try {
-      const response = await fetch(
-        'https://api.unsplash.com/photos/random?query=islamic&count=8&client_id=UM26ylfxkEFSGouPqOkDSL3eps9NPFHorVByglnKUYI'
-      );
-      const data = await response.json();
-      const urls = data.map((item: any) => item.urls.regular);
+      const query = 'Islamic';
+      const perPage = 8;
+      const response = await client.photos.search({ query, per_page: perPage });
+
+      if ((response as ErrorResponse).error) {
+        throw new Error((response as ErrorResponse).error.message);
+      }
+
+      const photos = (response as PhotoResponse).photos;
+      const urls = photos.map((photo: any) => photo.src.original);
       setImageUrls(urls);
     } catch (error) {
       console.error('Error fetching images:', error);

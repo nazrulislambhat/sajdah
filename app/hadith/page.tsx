@@ -84,7 +84,7 @@ export default function App() {
         </span>
       </h2>
       <Link
-        href="/hadith"
+        href="/"
         className="border-2 gap-1 flex items-center justify-between border-PrimarySalahSync text-PrimarySalahSync font-bold bg-LightSalahSync text-xs px-6 py-3 rounded-md hover:border-LightSalahSync hover:bg-PrimarySalahSync transition duration-300 ease-in-out hover:text-LightSalahSync hover:border-2 my-4"
       >
         Home

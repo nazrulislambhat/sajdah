@@ -1,9 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardBody, CardFooter, Image } from '@nextui-org/react';
+import {
+  Card,
+  CardBody,
+  CardFooter,
+  Image,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  useDisclosure,
+  ModalFooter,
+  Button,
+} from '@nextui-org/react';
+interface Hadith {
+  title: string;
+  reference: string;
+  english: string;
+}
 
 export default function App() {
   const [imageUrls, setImageUrls] = useState([]);
   const [hadiths, setHadiths] = useState([]);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [selectedHadith, setSelectedHadith] = useState<Hadith | null>(null);
 
   useEffect(() => {
     fetchIslamicImages();
@@ -44,6 +63,13 @@ export default function App() {
 
   const shuffledHadiths = shuffleArray(hadiths);
 
+  const handleCardClick = (index: any) => {
+    setSelectedHadith(shuffledHadiths[index]);
+    onOpen();
+  };
+
+  console.log('selectedHadith:', selectedHadith);
+
   return (
     <div className="border-PrimarySalahSync border-2 w-fit bg-WhiteSalahSync rounded-lg flex flex-col items-center justify-center pt-6">
       <h2 className="text-PrimarySalahSync font-bold text-4xl flex flex-col items-center gap-4">
@@ -61,7 +87,7 @@ export default function App() {
                 shadow="lg"
                 key={index}
                 isPressable
-                onPress={() => console.log('item pressed')}
+                onPress={() => handleCardClick(index)}
                 className="max-w-[200px] h-full flex flex-col"
               >
                 <CardBody className="overflow-visible p-1">
@@ -71,7 +97,7 @@ export default function App() {
                     width="100%"
                     height="100%"
                     alt={hadith.title}
-                    className="w-full h-[120px] object-cover "
+                    className="w-full h-[120px] max-h-[120px] min-h-[120px] object-cover "
                     src={imageUrls[index % imageUrls.length]}
                   />
                 </CardBody>
@@ -87,6 +113,19 @@ export default function App() {
             )
           )}
       </div>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        className="hadith-modal"
+      >
+        <ModalContent>
+          <ModalBody className="bg-LightSalahSync p-4 rounded-xl">
+            <p className="text-xs text-PrimarySalahSync p-4">
+              {selectedHadith ? selectedHadith.english : ''}
+            </p>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </div>
   );
 }

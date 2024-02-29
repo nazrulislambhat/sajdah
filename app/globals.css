@@ -80,3 +80,11 @@ body {
 .back {
   transform: rotateY(180deg);
 }
+.hadith-modal button {
+  background-color: #f46036;
+  color: #ebf2fa;
+}
+.hadith-modal button:hover {
+  background-color: #3423a6;
+  color: #ebf2fa;
+}

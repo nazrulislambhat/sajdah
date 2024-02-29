@@ -12,10 +12,10 @@ export default function Home() {
       <RamadanModeSwitch />
       <TasbeehCounter />
       <Link
-        href="/hadith"
+        href="/duas"
         className="border-2 gap-1 flex items-center justify-between border-PrimarySalahSync text-PrimarySalahSync font-bold bg-WhiteSalahSync text-xs px-6 py-3 rounded-md hover:border-WhiteSalahSync hover:bg-PrimarySalahSync transition duration-300 ease-in-out hover:text-WhiteSalahSync hover:border-2"
       >
-        Hadith
+        Duas
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

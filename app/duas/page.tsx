@@ -15,23 +15,23 @@ import {
 } from '@nextui-org/react';
 
 import Link from 'next/link';
-interface Hadith {
+interface duas {
   title: string;
   reference: string;
   english: string;
 }
 import { UNSPLASH_CLIENT_ID } from '@/config/unsplash';
 
-export default function App() {
+export default function Duas() {
   const [imageUrls, setImageUrls] = useState([]);
-  const [hadiths, setHadiths] = useState([]);
+  const [duass, setduass] = useState([]);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [selectedHadith, setSelectedHadith] = useState<Hadith | null>(null);
+  const [selectedduas, setSelectedduas] = useState<duas | null>(null);
   const [modalPlacement, setModalPlacement] = React.useState('auto');
 
   useEffect(() => {
     fetchIslamicImages();
-    fetchHadiths();
+    fetchduass();
   }, []);
 
   const fetchIslamicImages = async () => {
@@ -47,13 +47,13 @@ export default function App() {
     }
   };
 
-  const fetchHadiths = async () => {
+  const fetchduass = async () => {
     try {
-      const response = await fetch('/hadith.json');
+      const response = await fetch('/duas.json');
       const data = await response.json();
-      setHadiths(data);
+      setduass(data);
     } catch (error) {
-      console.error('Error fetching hadiths:', error);
+      console.error('Error fetching duass:', error);
     }
   };
 
@@ -66,21 +66,21 @@ export default function App() {
     return array;
   };
 
-  const shuffledHadiths = shuffleArray(hadiths);
+  const shuffledduass = shuffleArray(duass);
 
   const handleCardClick = (index: any) => {
-    setSelectedHadith(shuffledHadiths[index]);
+    setSelectedduas(shuffledduass[index]);
     onOpen();
   };
 
-  console.log('selectedHadith:', selectedHadith);
+  console.log('selectedduas:', selectedduas);
 
   return (
     <div className="border-PrimarySalahSync px-8 py-12 border-2 h-fit w-fit xl:w-full bg-WhiteSalahSync rounded-lg flex flex-col items-center justify-center pt-6">
       <h2 className="text-PrimarySalahSync font-bold text-4xl flex flex-col items-center gap-4">
-        Daily Hadiths{' '}
+        Daily Duas{' '}
         <span className="text-xs text-PrimarySalahSync">
-          Click the card to read the full hadith
+          Click the card to read the full duas
         </span>
       </h2>
       <Link
@@ -104,10 +104,10 @@ export default function App() {
         </svg>
       </Link>
       <div className="gap-4 grid xl:grid-cols-4 sm:grid-cols-4 xl:px-12 xl:pb-12 pt-10">
-        {shuffledHadiths
+        {shuffledduass
           .slice(0, 16)
           .map(
-            (hadith: { title: string; reference: string }, index: number) => (
+            (duas: { title: string; reference: string }, index: number) => (
               <Card
                 shadow="lg"
                 key={index}
@@ -121,17 +121,17 @@ export default function App() {
                     radius="none"
                     width="100%"
                     height="100%"
-                    alt={hadith.title}
+                    alt={duas.title}
                     className="w-full h-[150px] max-h-[180px] min-h-[150px] object-cover rounded-tr-xl rounded-tl-xl"
                     src={imageUrls[index % imageUrls.length]}
                   />
                 </CardBody>
                 <CardFooter className="text-small justify-between flex flex-col items-center bg-LightSalahSync p-b-8">
                   <p className="text-xs font-bold py-2 text-TertiarySalahSync">
-                    {hadith.title}
+                    {duas.title}
                   </p>
                   <p className="text-xs py-2 text-TertiarySalahSync">
-                    {hadith.reference}
+                    {duas.reference}
                   </p>
                 </CardFooter>
               </Card>
@@ -142,12 +142,12 @@ export default function App() {
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         placement="center"
-        className="hadith-modal absolute"
+        className="duas-modal absolute"
       >
         <ModalContent>
           <ModalBody className="bg-LightSalahSync p-4 rounded-xl">
             <p className="text-xs text-TertiarySalahSync p-4">
-              {selectedHadith ? selectedHadith.english : ''}
+              {selectedduas ? selectedduas.english : ''}
             </p>
           </ModalBody>
         </ModalContent>

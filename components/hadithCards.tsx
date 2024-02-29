@@ -1,11 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardBody, CardFooter, Image } from '@nextui-org/react';
+import {
+  Card,
+  CardBody,
+  CardFooter,
+  Image,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  useDisclosure,
+  ModalFooter,
+  Button,
+} from '@nextui-org/react';
+interface Hadith {
+  title: string;
+  reference: string;
+  english: string;
+}
 
 export default function App() {
   const [imageUrls, setImageUrls] = useState([]);
+  const [hadiths, setHadiths] = useState([]);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [selectedHadith, setSelectedHadith] = useState<Hadith | null>(null);
 
   useEffect(() => {
     fetchIslamicImages();
+    fetchHadiths();
   }, []);
 
   const fetchIslamicImages = async () => {
@@ -21,66 +42,90 @@ export default function App() {
     }
   };
 
-  const list = [
-    {
-      title: 'Orange',
-      price: '$5.50',
-    },
-    {
-      title: 'Tangerine',
-      price: '$3.00',
-    },
-    {
-      title: 'Raspberry',
-      price: '$10.00',
-    },
-    {
-      title: 'Lemon',
-      price: '$5.30',
-    },
-    {
-      title: 'Avocado',
-      price: '$15.70',
-    },
-    {
-      title: 'Lemon 2',
-      price: '$8.00',
-    },
-    {
-      title: 'Banana',
-      price: '$7.50',
-    },
-    {
-      title: 'Watermelon',
-      price: '$12.20',
-    },
-  ];
+  const fetchHadiths = async () => {
+    try {
+      const response = await fetch('/hadith.json');
+      const data = await response.json();
+      setHadiths(data);
+    } catch (error) {
+      console.error('Error fetching hadiths:', error);
+    }
+  };
+
+  const shuffleArray = (array: any) => {
+    // Shuffling the array using Fisher-Yates algorithm
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
+
+  const shuffledHadiths = shuffleArray(hadiths);
+
+  const handleCardClick = (index: any) => {
+    setSelectedHadith(shuffledHadiths[index]);
+    onOpen();
+  };
+
+  console.log('selectedHadith:', selectedHadith);
 
   return (
-    <div className="gap-2 grid grid-cols-2 sm:grid-cols-4 border-2 border-PrimarySalahSync px-16 py-24 rounded-lg">
-      {list.map((item, index) => (
-        <Card
-          shadow="sm"
-          key={index}
-          isPressable
-          onPress={() => console.log('item pressed')}
-        >
-          <CardBody className="overflow-visible p-0">
-            <Image
-              shadow="sm"
-              radius="sm"
-              width="100%"
-              alt={item.title}
-              className="w-full object-cover h-[120px] max-w-[200px]"
-              src={imageUrls[index % imageUrls.length]} // Using modulus to ensure the image URLs repeat if there are fewer images than list items
-            />
-          </CardBody>
-          <CardFooter className="text-small justify-between">
-            <b>{item.title}</b>
-            <p className="text-default-500">{item.price}</p>
-          </CardFooter>
-        </Card>
-      ))}
+    <div className="border-PrimarySalahSync border-2 w-fit bg-WhiteSalahSync rounded-lg flex flex-col items-center justify-center pt-6">
+      <h2 className="text-PrimarySalahSync font-bold text-4xl flex flex-col items-center gap-4">
+        Daily Hadiths{' '}
+        <span className="text-xs text-PrimarySalahSync">
+          Click the card to read the full hadith
+        </span>
+      </h2>
+      <div className="gap-4 grid xl:grid-cols-2 sm:grid-cols-4 px-12 pb-12 pt-10">
+        {shuffledHadiths
+          .slice(0, 8)
+          .map(
+            (hadith: { title: string; reference: string }, index: number) => (
+              <Card
+                shadow="lg"
+                key={index}
+                isPressable
+                onPress={() => handleCardClick(index)}
+                className="max-w-[200px] xl:max-w-[300px] h-full flex flex-col"
+              >
+                <CardBody className="overflow-visible p-1">
+                  <Image
+                    shadow="none"
+                    radius="sm"
+                    width="100%"
+                    height="100%"
+                    alt={hadith.title}
+                    className="w-full h-[120px] max-h-[120px] min-h-[120px] object-cover"
+                    src={imageUrls[index % imageUrls.length]}
+                  />
+                </CardBody>
+                <CardFooter className="text-small justify-between flex flex-col items-center bg-LightSalahSync p-b-8">
+                  <p className="text-xs font-bold py-2 text-TerinarySalahSync">
+                    {hadith.title}
+                  </p>
+                  <p className="text-xs py-2 text-TerinarySalahSync">
+                    {hadith.reference}
+                  </p>
+                </CardFooter>
+              </Card>
+            )
+          )}
+      </div>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        className="hadith-modal"
+      >
+        <ModalContent>
+          <ModalBody className="bg-LightSalahSync p-4 rounded-xl">
+            <p className="text-xs text-PrimarySalahSync p-4">
+              {selectedHadith ? selectedHadith.english : ''}
+            </p>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </div>
   );
 }

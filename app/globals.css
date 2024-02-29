@@ -16,43 +16,25 @@ body {
   box-sizing: border-box;
 }
 
-.underline-left-to-right {
+.header-menu--link {
   position: relative;
 }
 
-.underline-left-to-right::before {
+.header-menu--link::before {
   content: '';
   position: absolute;
   bottom: -2px;
   left: 0;
   width: 0;
   height: 2px;
-  background-color: #ede7e3;
+  background-color: #3423a6;
   transition: width 0.3s ease;
 }
 
-.underline-left-to-right:hover::before {
+.header-menu--link:hover::before {
   width: 100%;
 }
 
-.underline-right-to-left {
-  position: relative;
-}
-
-.underline-right-to-left::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  right: 0;
-  width: 0;
-  height: 2px;
-  background-color: #ede7e3;
-  transition: width 0.3s ease;
-}
-
-.underline-right-to-left:hover::after {
-  width: 100%;
-}
 .flip-container {
   perspective: 1000px;
 }

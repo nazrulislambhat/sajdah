@@ -76,7 +76,7 @@ export default function Duas() {
   console.log('selectedduas:', selectedduas);
 
   return (
-    <div className="border-PrimarySalahSync px-8 py-12 border-2 h-fit w-fit xl:w-full bg-WhiteSalahSync rounded-lg flex flex-col items-center justify-center pt-6">
+    <div className="border-PrimarySalahSync px-8 py-12 border-2 h-fit w-fit xl:w-full bg-LightSalahSync  boxed rounded-lg flex flex-col items-center justify-center pt-6">
       <h2 className="text-PrimarySalahSync font-bold text-4xl flex flex-col items-center gap-4">
         Daily Duas{' '}
         <span className="text-xs text-PrimarySalahSync">
@@ -106,37 +106,35 @@ export default function Duas() {
       <div className="gap-4 grid xl:grid-cols-4 sm:grid-cols-4 xl:px-12 xl:pb-12 pt-10">
         {shuffledduass
           .slice(0, 16)
-          .map(
-            (duas: { title: string; reference: string }, index: number) => (
-              <Card
-                shadow="lg"
-                key={index}
-                isPressable
-                onPress={() => handleCardClick(index)}
-                className="max-w-full min-w-[200px] xl:max-w-[300px] h-fit flex flex-col hover:scale-105"
-              >
-                <CardBody className="overflow-visible p-1">
-                  <Image
-                    shadow="none"
-                    radius="none"
-                    width="100%"
-                    height="100%"
-                    alt={duas.title}
-                    className="w-full h-[150px] max-h-[180px] min-h-[150px] object-cover rounded-tr-xl rounded-tl-xl"
-                    src={imageUrls[index % imageUrls.length]}
-                  />
-                </CardBody>
-                <CardFooter className="text-small justify-between flex flex-col items-center bg-LightSalahSync p-b-8">
-                  <p className="text-xs font-bold py-2 text-TertiarySalahSync">
-                    {duas.title}
-                  </p>
-                  <p className="text-xs py-2 text-TertiarySalahSync">
-                    {duas.reference}
-                  </p>
-                </CardFooter>
-              </Card>
-            )
-          )}
+          .map((duas: { title: string; reference: string }, index: number) => (
+            <Card
+              shadow="lg"
+              key={index}
+              isPressable
+              onPress={() => handleCardClick(index)}
+              className="max-w-full min-w-[200px] xl:max-w-[300px] h-fit flex flex-col hover:scale-105"
+            >
+              <CardBody className="overflow-visible p-1">
+                <Image
+                  shadow="none"
+                  radius="none"
+                  width="100%"
+                  height="100%"
+                  alt={duas.title}
+                  className="w-full h-[150px] max-h-[180px] min-h-[150px] object-cover rounded-tr-xl rounded-tl-xl"
+                  src={imageUrls[index % imageUrls.length]}
+                />
+              </CardBody>
+              <CardFooter className="text-small justify-between flex flex-col items-center bg-LightSalahSync p-b-8">
+                <p className="text-xs font-bold py-2 text-TertiarySalahSync">
+                  {duas.title}
+                </p>
+                <p className="text-xs py-2 text-TertiarySalahSync">
+                  {duas.reference}
+                </p>
+              </CardFooter>
+            </Card>
+          ))}
       </div>
       <Modal
         isOpen={isOpen}

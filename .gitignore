@@ -32,7 +32,7 @@ yarn-error.log*
 .vercel
 
 # api keys
-api.js
+config/unsplash.js
 
 # typescript
 *.tsbuildinfo

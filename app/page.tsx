@@ -8,7 +8,7 @@ import { MacbookScroll } from '@/components/ui/macbook';
 export default function Home() {
   return (
     <main className="min-h-screen boxed bg-LightSalahSync flex flex-col gap-4 xl:gap-8 items-center ">
-      <MacbookScroll />
+      
     </main>
   );
 }

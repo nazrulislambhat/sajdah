@@ -19,7 +19,7 @@ interface Hadith {
   reference: string;
   english: string;
 }
-import { UNSPLASH_CLIENT_ID } from '../../api';
+import { UNSPLASH_CLIENT_ID } from '@/api';
 
 export default function App() {
   const [imageUrls, setImageUrls] = useState([]);

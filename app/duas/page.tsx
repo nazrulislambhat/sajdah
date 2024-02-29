@@ -78,7 +78,7 @@ export default function Duas() {
   return (
     <div className="border-PrimarySalahSync px-8 py-12 border-2 h-fit w-fit xl:w-full bg-WhiteSalahSync rounded-lg flex flex-col items-center justify-center pt-6">
       <h2 className="text-PrimarySalahSync font-bold text-4xl flex flex-col items-center gap-4">
-        Daily duass{' '}
+        Daily Duas{' '}
         <span className="text-xs text-PrimarySalahSync">
           Click the card to read the full duas
         </span>

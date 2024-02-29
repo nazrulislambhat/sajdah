@@ -4,7 +4,7 @@ import './globals.css';
 import { Providers } from './providers';
 
 const comfortaa = Comfortaa({ subsets: ['latin'] });
-const notoSans = Rubik({ subsets: ['arabic'] });
+const rubik = Rubik({ subsets: ['arabic'] });
 
 export const metadata: Metadata = {
   title: 'SalahSync - Your Personal Deen Companion',

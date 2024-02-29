@@ -57,31 +57,36 @@ export default function App() {
   ];
 
   return (
-    <div className="gap-2 grid grid-cols-2 sm:grid-cols-4 border-2 bg-WhiteSalahSync border-PrimarySalahSync px-16 py-24 rounded-lg">
-      {list.map((item, index) => (
-        <Card
-          shadow="sm"
-          key={index}
-          isPressable
-          onPress={() => console.log('item pressed')}
-        >
-          <CardBody className="overflow-visible p-0 bg-SecondarySalahSync">
-            <Image
-              shadow="none"
-              radius="none"
-              width="100%"
-              alt={item.title}
-              className="w-full object-cover h-[120px] max-w-[200px] "
-              src={imageUrls[index % imageUrls.length]} // Using modulus to ensure the image URLs repeat if there are fewer images than list items
-            />
-          </CardBody>
-          <CardFooter className="text-small justify-between bg-YellowSalahSync">
-            <p className="text-xs font-bold py-2 text-PrimarySalahSync">
-              {item.title}
-            </p>
-          </CardFooter>
-        </Card>
-      ))}
+    <div className="border-PrimarySalahSync border-2 bg-WhiteSalahSync  rounded-lg flex flex-col items-center justify-center pt-6">
+      <h2 className="text-PrimarySalahSync font-bold text-4xl">
+        Daily Hadiths
+      </h2>
+      <div className="gap-4 grid grid-cols-2 sm:grid-cols-4 px-16 pb-12 pt-10 ">
+        {list.map((item, index) => (
+          <Card
+            shadow="sm"
+            key={index}
+            isPressable
+            onPress={() => console.log('item pressed')}
+          >
+            <CardBody className="overflow-visible p-0 ">
+              <Image
+                shadow="none"
+                radius="none"
+                width="100%"
+                alt={item.title}
+                className="w-full object-cover h-[120px] max-w-[200px] "
+                src={imageUrls[index % imageUrls.length]} // Using modulus to ensure the image URLs repeat if there are fewer images than list items
+              />
+            </CardBody>
+            <CardFooter className="text-small justify-between bg-LightSalahSync">
+              <p className="text-xs font-bold py-2 text-TerinarySalahSync">
+                {item.title}
+              </p>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }

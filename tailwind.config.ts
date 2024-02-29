@@ -16,7 +16,7 @@ const config: Config = {
         LightSalahSync: '#EBF2FA',
         WhiteSalahSync: '#f7fff6',
         TertiarySalahSync: '#171717',
-        RedSalahSync: '#D00000',
+        RedSalahSync: '#f46036',
         YellowSalahSync: '#F5DD90',
         OrangeSalahSync: '#F68E5F',
       },

@@ -97,7 +97,7 @@ export default function App() {
                     width="100%"
                     height="100%"
                     alt={hadith.title}
-                    className="w-full h-[120px] max-h-[120px] min-h-[120px] object-cover "
+                    className="w-full h-[120px] max-h-[120px] min-h-[120px] object-cover"
                     src={imageUrls[index % imageUrls.length]}
                   />
                 </CardBody>

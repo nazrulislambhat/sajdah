@@ -1,9 +1,8 @@
 'use client';
 import Footer from '@/components/footer';
-import RamadanModeSwitch from '@/components/ramadanSwitch';
-import TasbeehCounter from '@/components/tasbeeh';
 import Image from 'next/image';
 import Header from '@/components/header';
+
 import HadithCards from '@/components/hadithCards';
 import PrayerTracker from '@/components/PrayerTracker';
 export default function Home() {

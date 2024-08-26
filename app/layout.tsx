@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Comfortaa, Rubik } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
+
 import { Inter as FontSans } from 'next/font/google';
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -9,6 +10,7 @@ const fontSans = FontSans({
 });
 import { cn } from '@/lib/utils';
 
+import { SpeedInsights } from '@vercel/speed-insights/next';
 const comfortaa = Comfortaa({ subsets: ['latin'] });
 const rubik = Rubik({ subsets: ['arabic'] });
 

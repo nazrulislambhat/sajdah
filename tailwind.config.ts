@@ -23,7 +23,7 @@ const config = {
         border: 'hsl(var(--border))',
         colorRed: '#F22B29',
         colorGreen: '#2D936C',
-        colorBlue: '#5E2BFF',
+        colorBlue: '#3B28CC',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',

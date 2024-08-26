@@ -5,29 +5,29 @@ export default function Footer() {
     <nav className="flex h-16 xl:h-48 justify-center items-center flex-col bg-PrimarySalahSync boxed text-WhiteSalahSync">
       <ul className="flex gap-8 text-xs">
         <li>
-          <a href="/" className="underline-left-to-right">
+          <Link href="/" className="underline-left-to-right">
             About
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="/" className="underline-left-to-right">
+          <Link href="/" className="underline-left-to-right">
             Privacy
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="/" className="underline-left-to-right">
+          <Link href="/" className="underline-left-to-right">
             Terms
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="/" className="underline-left-to-right">
+          <Link href="/" className="underline-left-to-right">
             Contact
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="/" className="underline-left-to-right">
+          <Link href="/" className="underline-left-to-right">
             Community
-          </a>
+          </Link>
         </li>
       </ul>
     </nav>

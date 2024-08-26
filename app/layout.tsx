@@ -2,6 +2,12 @@ import type { Metadata } from 'next';
 import { Comfortaa, Rubik } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
+import { Inter as FontSans } from 'next/font/google';
+const fontSans = FontSans({
+  subsets: ['latin'],
+  variable: '--font-sans',
+});
+import { cn } from '@/lib/utils';
 
 const comfortaa = Comfortaa({ subsets: ['latin'] });
 const rubik = Rubik({ subsets: ['arabic'] });
@@ -14,7 +20,12 @@ export const metadata: Metadata = {
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="light max-width bg-background">
-      <body className={`${comfortaa.className}`}>
+      <body
+        className={cn(
+          'min-h-screen bg-background font-sans antialiased',
+          fontSans.variable
+        )}
+      >
         <Providers>{children}</Providers>
       </body>
     </html>

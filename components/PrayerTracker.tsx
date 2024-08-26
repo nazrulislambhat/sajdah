@@ -4,6 +4,11 @@ import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
+type AlertProps = {
+  className?: string;
+  variant?: 'success' | 'error' | 'info'; // Add other variants if needed
+};
+
 import {
   Popover,
   PopoverContent,
@@ -60,6 +65,10 @@ export default function Component() {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
   const [showSaveSuccess, setShowSaveSuccess] = useState(false);
+  const [
+    showAllPrayedInJamaatNotification,
+    setShowAllPrayedInJamaatNotification,
+  ] = useState(false);
 
   useEffect(() => {
     const savedEntries = localStorage.getItem('prayerEntries');
@@ -67,6 +76,14 @@ export default function Component() {
       setEntries(JSON.parse(savedEntries));
     }
   }, []);
+
+  useEffect(() => {
+    const currentEntry = getCurrentEntry();
+    const allPrayedInJamaat = prayers.every(
+      (prayer) => currentEntry.statuses[prayer] === 'prayed-jamaat'
+    );
+    setShowAllPrayedInJamaatNotification(allPrayedInJamaat);
+  }, [entries, currentDate]);
 
   const handleDateSelect = (selectedDate: Date | undefined) => {
     if (selectedDate) {
@@ -161,6 +178,15 @@ export default function Component() {
           </AlertDescription>
         </Alert>
       )}
+      {showAllPrayedInJamaatNotification && (
+        <Alert className="mb-4 success">
+          <AlertTitle>Congratulations!</AlertTitle>
+          <AlertDescription>
+            All prayers for {format(currentDate, 'PPP')} have been prayed in
+            <span className=" text-green-400 font-bold"> Jamaat.</span>
+          </AlertDescription>
+        </Alert>
+      )}
       <Card>
         <CardHeader>
           <CardTitle className="text-lg font-semibold">
@@ -208,9 +234,9 @@ export default function Component() {
                 </label>
                 <Select
                   value={getCurrentEntry().statuses[prayer] || ''}
-                  onValueChange={(value: PrayerStatus) =>
-                    handlePrayerStatusChange(prayer, value)
-                  }
+                  onValueChange={(value) => {
+                    handlePrayerStatusChange(prayer, value as PrayerStatus);
+                  }}
                 >
                   <SelectTrigger
                     id={prayer}
@@ -227,12 +253,15 @@ export default function Component() {
                     <SelectItem value="prayed" className="text-green-500">
                       Prayed
                     </SelectItem>
-                    <SelectItem
-                      value="prayed-jamaat"
-                      className="text-green-500 bg-green-100"
-                    >
-                      Prayed in Jamaat
-                    </SelectItem>
+                    {/* Conditionally render the 'Prayed in Jamaat' option */}
+                    {prayer !== 'Tahajjud' && (
+                      <SelectItem
+                        value="prayed-jamaat"
+                        className="text-green-500 bg-green-100"
+                      >
+                        Prayed in Jamaat
+                      </SelectItem>
+                    )}
                   </SelectContent>
                 </Select>
               </div>

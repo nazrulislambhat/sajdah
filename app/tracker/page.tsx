@@ -270,10 +270,16 @@ export default function Component() {
                     <SelectItem value="Not Prayed" className="text-colorRed">
                       Not Prayed
                     </SelectItem>
-                    <SelectItem value="Prayed On Time" className="text-colorBlue">
+                    <SelectItem
+                      value="Prayed On Time"
+                      className="text-colorBlue"
+                    >
                       Prayed On Time
                     </SelectItem>
-                    <SelectItem value="Prayed But Qaza" className="text-colorPurple">
+                    <SelectItem
+                      value="Prayed But Qaza"
+                      className="text-colorPurple"
+                    >
                       Prayed But Qaza
                     </SelectItem>
                     {/* Conditionally render the 'Prayed in Jamaat' option */}
@@ -299,6 +305,7 @@ export default function Component() {
                   cy="50%"
                   labelLine={false}
                   outerRadius={65}
+                  innerRadius={35}
                   fill="#8884d8"
                   dataKey="value"
                   label={({ name, percent }) =>

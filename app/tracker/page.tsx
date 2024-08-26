@@ -51,13 +51,19 @@ const prayers = [
   'Maghrib',
   'Isha',
 ];
-type PrayerStatus = 'Not Prayed' | 'Prayed' | 'Prayed In Jamaat' | null;
+type PrayerStatus =
+  | 'Not Prayed'
+  | 'Prayed On Time'
+  | 'Prayed In Jamaat'
+  | 'Prayed But Qaza'
+  | null;
 type PrayerEntry = { date: string; statuses: Record<string, PrayerStatus> };
 
 const statusColors = {
   'Not Prayed': '#F22B29',
-  Prayed: '#3B28CC',
+  'Prayed On Time': '#3B28CC',
   'Prayed In Jamaat': '#2D936C',
+  'Prayed But Qaza': '#360568',
 };
 
 export default function Component() {
@@ -86,7 +92,7 @@ export default function Component() {
       const status = currentEntry.statuses[prayer];
 
       if (prayer === 'Tahajjud' || prayer === 'Chast') {
-        return status === 'Prayed' || status === 'Not Prayed';
+        return status === 'Prayed On Time' || status === 'Not Prayed';
       } else {
         return status === 'Prayed In Jamaat';
       }
@@ -133,10 +139,12 @@ export default function Component() {
     switch (status) {
       case 'Not Prayed':
         return 'text-white bg-colorRed';
-      case 'Prayed':
+      case 'Prayed On Time':
         return 'text-white bg-colorBlue';
       case 'Prayed In Jamaat':
         return 'text-white bg-colorGreen';
+      case 'Prayed But Qaza':
+        return 'text-white bg-colorPurple';
       default:
         return '';
     }
@@ -262,8 +270,11 @@ export default function Component() {
                     <SelectItem value="Not Prayed" className="text-colorRed">
                       Not Prayed
                     </SelectItem>
-                    <SelectItem value="Prayed" className="text-colorBlue">
-                      Prayed
+                    <SelectItem value="Prayed On Time" className="text-colorBlue">
+                      Prayed On Time
+                    </SelectItem>
+                    <SelectItem value="Prayed But Qaza" className="text-colorPurple">
+                      Prayed But Qaza
                     </SelectItem>
                     {/* Conditionally render the 'Prayed in Jamaat' option */}
                     {prayer !== 'Tahajjud' && prayer !== 'Chast' && (
@@ -271,7 +282,7 @@ export default function Component() {
                         value="Prayed In Jamaat"
                         className="text-colorGreen"
                       >
-                        Prayed in Jamaat
+                        Prayed In Jamaat
                       </SelectItem>
                     )}
                   </SelectContent>
@@ -280,14 +291,14 @@ export default function Component() {
             ))}
           </div>
           <div className="mt-8 h-64">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" className="text-xs">
               <PieChart>
                 <Pie
                   data={getPieChartData()}
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  outerRadius={80}
+                  outerRadius={65}
                   fill="#8884d8"
                   dataKey="value"
                   label={({ name, percent }) =>

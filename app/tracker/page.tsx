@@ -51,13 +51,13 @@ const prayers = [
   'Maghrib',
   'Isha',
 ];
-type PrayerStatus = 'not-prayed' | 'prayed' | 'prayed-jamaat' | null;
+type PrayerStatus = 'Not Prayed' | 'Prayed' | 'Prayed In Jamaat' | null;
 type PrayerEntry = { date: string; statuses: Record<string, PrayerStatus> };
 
 const statusColors = {
-  'not-prayed': '#ef4444',
-  prayed: '#22c55e',
-  'prayed-jamaat': '#bbf7d0',
+  'Not Prayed': '#F22B29',
+  Prayed: '#3B28CC',
+  'Prayed In Jamaat': '#2D936C',
 };
 
 export default function Component() {
@@ -80,9 +80,18 @@ export default function Component() {
 
   useEffect(() => {
     const currentEntry = getCurrentEntry();
-    const allPrayedInJamaat = prayers.every(
-      (prayer) => currentEntry.statuses[prayer] === 'prayed-jamaat'
-    );
+
+    // Check if all prayers are Prayed, considering the conditions for Chast and Tahajjud
+    const allPrayedInJamaat = prayers.every((prayer) => {
+      const status = currentEntry.statuses[prayer];
+
+      if (prayer === 'Tahajjud' || prayer === 'Chast') {
+        return status === 'Prayed' || status === 'Not Prayed';
+      } else {
+        return status === 'Prayed In Jamaat';
+      }
+    });
+
     setShowAllPrayedInJamaatNotification(allPrayedInJamaat);
   }, [entries, currentDate]);
 
@@ -122,12 +131,12 @@ export default function Component() {
 
   const getStatusColor = (status: PrayerStatus) => {
     switch (status) {
-      case 'not-prayed':
-        return 'text-red-500';
-      case 'prayed':
-        return 'text-green-500';
-      case 'prayed-jamaat':
-        return 'text-green-500 bg-green-100';
+      case 'Not Prayed':
+        return 'text-white bg-colorRed';
+      case 'Prayed':
+        return 'text-white bg-colorBlue';
+      case 'Prayed In Jamaat':
+        return 'text-white bg-colorGreen';
       default:
         return '';
     }
@@ -180,11 +189,13 @@ export default function Component() {
         </Alert>
       )}
       {showAllPrayedInJamaatNotification && (
-        <Alert className="mb-4 success">
+        <Alert className="mb-4 success border-colorGreen border-2">
           <AlertTitle>Congratulations!</AlertTitle>
           <AlertDescription>
-            All prayers for {format(currentDate, 'PPP')} have been prayed in
-            <span className=" text-green-400 font-bold"> Jamaat.</span>
+            All fard prayers for{' '}
+            <span className="text-colorBlue">{format(currentDate, 'PPP')}</span>{' '}
+            have been Prayed in
+            <span className=" text-colorGreen font-bold"> Jamaat</span>
           </AlertDescription>
         </Alert>
       )}
@@ -248,17 +259,17 @@ export default function Component() {
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="not-prayed" className="text-red-500">
+                    <SelectItem value="Not Prayed" className="text-colorRed">
                       Not Prayed
                     </SelectItem>
-                    <SelectItem value="prayed" className="text-green-500">
+                    <SelectItem value="Prayed" className="text-colorBlue">
                       Prayed
                     </SelectItem>
                     {/* Conditionally render the 'Prayed in Jamaat' option */}
-                    {prayer !== 'Tahajjud' && (
+                    {prayer !== 'Tahajjud' && prayer !== 'Chast' && (
                       <SelectItem
-                        value="prayed-jamaat"
-                        className="text-green-500 bg-green-100"
+                        value="Prayed In Jamaat"
+                        className="text-colorGreen"
                       >
                         Prayed in Jamaat
                       </SelectItem>

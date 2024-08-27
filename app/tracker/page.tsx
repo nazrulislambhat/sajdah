@@ -293,7 +293,11 @@ export default function Component() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <h1 className="text-2xl font-bold mb-4">Welcome to Prayer Tracker</h1>
-        <Button onClick={signIn} disabled={isSigningIn} className='bg-white text-black border-2 border-black hover:text-white text-xs font-semibold'>
+        <Button
+          onClick={signIn}
+          disabled={isSigningIn}
+          className="bg-white text-black border-2 border-black hover:text-white text-xs font-semibold"
+        >
           {' '}
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -320,7 +324,9 @@ export default function Component() {
               d="M43.611,20.083L43.595,20L42,20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571	c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
             ></path>
           </svg>
-          <span className='pl-4'>{isSigningIn ? 'Signing in...' : 'Sign in with Google'}</span>
+          <span className="pl-4">
+            {isSigningIn ? 'Signing in...' : 'Sign in with Google'}
+          </span>
         </Button>
         {signInError && (
           <Alert variant="destructive" className="mt-4">
@@ -408,27 +414,20 @@ export default function Component() {
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Not Prayed" className="text-colorRed">
-                      Not Prayed
-                    </SelectItem>
-                    <SelectItem
-                      value="Prayed On Time"
-                      className="text-colorBlue"
-                    >
+                    <SelectItem value="Not Prayed">Not Prayed</SelectItem>
+                    <SelectItem value="Prayed On Time">
                       Prayed On Time
                     </SelectItem>
-                    <SelectItem
-                      value="Prayed In Jamaat"
-                      className="text-colorGreen"
-                    >
-                      Prayed In Jamaat
-                    </SelectItem>
-                    <SelectItem
-                      value="Prayed But Qaza"
-                      className="text-colorPurple"
-                    >
-                      Prayed But Qaza
-                    </SelectItem>
+                    {prayer !== 'Tahajjud' && prayer !== 'Chast' && (
+                      <>
+                        <SelectItem value="Prayed In Jamaat">
+                          Prayed In Jamaat
+                        </SelectItem>
+                        <SelectItem value="Prayed But Qaza">
+                          Prayed But Qaza
+                        </SelectItem>
+                      </>
+                    )}
                   </SelectContent>
                 </Select>
               </div>
@@ -436,7 +435,7 @@ export default function Component() {
           </div>
           <div className="mt-8 h-64">
             <ResponsiveContainer width="100%" height="100%">
-              <PieChart className='text-xs rounded border-2'>
+              <PieChart className="text-xs rounded border-2">
                 <Pie
                   data={getPieChartData()}
                   cx="50%"

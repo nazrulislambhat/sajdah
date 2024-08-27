@@ -420,8 +420,7 @@ export default function Component() {
         <Alert className="mb-4 bg-green-100 border-green-400 text-green-700">
           <AlertTitle>Congratulations!</AlertTitle>
           <AlertDescription>
-            All your Fard prayers for {format(currentDate, 'PPP')} have been pr
-            ayed in Jamaat.
+            All your Fard prayers for <span classname="font-bold">{format(currentDate, 'PPP')}</span> have been prayed in <span classname="font-bold">Jamaat</span>.
           </AlertDescription>
         </Alert>
       )}

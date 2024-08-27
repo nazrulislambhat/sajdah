@@ -42,6 +42,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   User as FirebaseUser,
+  GithubAuthProvider,
 } from 'firebase/auth';
 import {
   getFirestore,
@@ -63,16 +64,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-
-const firebaseConfig = {
-  apiKey: 'AIzaSyAErADCm3oV3mZft9DlLo69H1kbwUXxuYc',
-  authDomain: 'prayertracker-1e48e.firebaseapp.com',
-  projectId: 'prayertracker-1e48e',
-  storageBucket: 'prayertracker-1e48e.appspot.com',
-  messagingSenderId: '1085385987618',
-  appId: '1:1085385987618:web:5b51af94a37e6e1bcb1c7b',
-  measurementId: 'G-V087D89QKG',
-};
+import { firebaseConfig } from '../../config/firebaseConfig';
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -131,14 +123,22 @@ export default function Component() {
     }
   }, [currentDate, user]);
 
-  const signIn = async () => {
+  const signIn = async (providerName: any) => {
     setIsSigningIn(true);
     setSignInError(null);
-    const provider = new GoogleAuthProvider();
+    let provider;
+    if (providerName === 'google') {
+      provider = new GoogleAuthProvider();
+    } else if (providerName === 'github') {
+      provider = new GithubAuthProvider();
+    } else {
+      console.error('Unsupported provider');
+      return;
+    }
+
     try {
       await signInWithPopup(auth, provider);
     } catch (error) {
-      console.error('Error signing in with Google', error);
       setSignInError('Failed to sign in. Please try again.');
     } finally {
       setIsSigningIn(false);
@@ -242,7 +242,7 @@ export default function Component() {
     );
     setShowConfetti(allFardInJamaat);
     if (allFardInJamaat) {
-      setTimeout(() => setShowConfetti(false), 5000);
+      setTimeout(() => setShowConfetti(false), 10000);
     }
   };
 
@@ -313,48 +313,61 @@ export default function Component() {
 
   if (!user) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen">
+      <div className="flex flex-col items-center justify-center min-h-screen gap-2">
         <h1 className="text-2xl font-bold mb-4">Welcome to Prayer Tracker</h1>
-        <Button
-          onClick={signIn}
+        {signInError && <p>{signInError}</p>}
+        <button
+          onClick={() => signIn('google')}
           disabled={isSigningIn}
-          className="bg-white text-black border-2 border-black hover:text-white text-xs font-semibold"
+          className="flex items-center border-gray-800 border-2 text-gray-800 gap-1 text-xs font-semibold rounded px-4 py-2 bg-white hover:bg-opacity-85"
+        >
+          <span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              x="0px"
+              y="0px"
+              width="30"
+              height="30"
+              viewBox="0 0 48 48"
+            >
+              <path
+                fill="#fbc02d"
+                d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12	s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20	s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
+              ></path>
+              <path
+                fill="#e53935"
+                d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039	l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
+              ></path>
+              <path
+                fill="#4caf50"
+                d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36	c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"
+              ></path>
+              <path
+                fill="#1565c0"
+                d="M43.611,20.083L43.595,20L42,20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571	c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
+              ></path>
+            </svg>
+          </span>
+          Sign in with Google
+        </button>
+        <button
+          onClick={() => signIn('github')}
+          disabled={isSigningIn}
+          className="flex items-center border-2 border-gray-800 text-white gap-1 text-xs font-semibold rounded px-4 py-2 bg-gray-800 hover:bg-opacity-85"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             x="0px"
             y="0px"
-            width="24"
-            height="24"
-            viewBox="0 0 48 48"
+            width="30"
+            height="30"
+            viewBox="0 0 72 72"
+            className="fill-white"
           >
-            <path
-              fill="#fbc02d"
-              d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12	s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20	s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
-            ></path>
-            <path
-              fill="#e53935"
-              d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039	l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
-            ></path>
-            <path
-              fill="#4caf50"
-              d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36	c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"
-            ></path>
-            <path
-              fill="#1565c0"
-              d="M43.611,20.083L43.595,20L42,20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571	c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
-            ></path>
+            <path d="M 36 12 C 22.745 12 12 22.745 12 36 C 12 49.255 22.745 60 36 60 C 49.255 60 60 49.255 60 36 C 60 22.745 49.255 12 36 12 z M 36 20 C 44.837 20 52 27.163 52 36 C 52 43.284178 47.128298 49.420174 40.46875 51.355469 C 40.198559 51.103128 39.941627 50.74363 39.953125 50.285156 C 39.980125 49.233156 39.953125 46.778953 39.953125 45.876953 C 39.953125 44.328953 38.972656 43.230469 38.972656 43.230469 C 38.972656 43.230469 46.654297 43.316141 46.654297 35.119141 C 46.654297 31.957141 45.003906 30.310547 45.003906 30.310547 C 45.003906 30.310547 45.872125 26.933953 44.703125 25.501953 C 43.393125 25.359953 41.046922 26.753297 40.044922 27.404297 C 40.044922 27.404297 38.457406 26.753906 35.816406 26.753906 C 33.175406 26.753906 31.587891 27.404297 31.587891 27.404297 C 30.586891 26.753297 28.239687 25.360953 26.929688 25.501953 C 25.760688 26.933953 26.628906 30.310547 26.628906 30.310547 C 26.628906 30.310547 24.974609 31.956141 24.974609 35.119141 C 24.974609 43.316141 32.65625 43.230469 32.65625 43.230469 C 32.65625 43.230469 31.782197 44.226723 31.693359 45.652344 C 31.180078 45.833418 30.48023 46.048828 29.8125 46.048828 C 28.2025 46.048828 26.978297 44.483766 26.529297 43.759766 C 26.086297 43.045766 25.178031 42.447266 24.332031 42.447266 C 23.775031 42.447266 23.503906 42.726922 23.503906 43.044922 C 23.503906 43.362922 24.285781 43.585781 24.800781 44.175781 C 25.887781 45.420781 25.866281 48.21875 29.738281 48.21875 C 30.196553 48.21875 31.021102 48.11542 31.677734 48.025391 C 31.674106 48.90409 31.663893 49.74536 31.677734 50.285156 C 31.688158 50.700354 31.476914 51.032045 31.236328 51.279297 C 24.726159 49.25177 20 43.177886 20 36 C 20 27.163 27.163 20 36 20 z"></path>
           </svg>
-          <span className="pl-4">
-            {isSigningIn ? 'Signing in...' : 'Sign in with Google'}
-          </span>
-        </Button>
-        {signInError && (
-          <Alert variant="destructive" className="mt-4">
-            <AlertTitle>Error</AlertTitle>
-            <AlertDescription>{signInError}</AlertDescription>
-          </Alert>
-        )}
+          Sign in with GitHub
+        </button>
       </div>
     );
   }

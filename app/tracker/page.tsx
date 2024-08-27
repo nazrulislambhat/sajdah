@@ -436,7 +436,7 @@ export default function Component() {
           </div>
           <div className="mt-8 h-64">
             <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
+              <PieChart className='text-xs rounded border-2'>
                 <Pie
                   data={getPieChartData()}
                   cx="50%"

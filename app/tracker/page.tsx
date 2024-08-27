@@ -5,10 +5,6 @@ import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
-type AlertProps = {
-  className?: string;
-  variant?: 'success' | 'error' | 'info'; // Add other variants if needed
-};
 
 import {
   Popover,
@@ -41,6 +37,37 @@ import {
   Legend,
   Tooltip,
 } from 'recharts';
+import { initializeApp } from 'firebase/app';
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  User,
+} from 'firebase/auth';
+import {
+  getFirestore,
+  collection,
+  doc,
+  setDoc,
+  getDoc,
+  query,
+  where,
+  getDocs,
+} from 'firebase/firestore';
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyAErADCm3oV3mZft9DlLo69H1kbwUXxuYc',
+  authDomain: 'prayertracker-1e48e.firebaseapp.com',
+  projectId: 'prayertracker-1e48e',
+  storageBucket: 'prayertracker-1e48e.appspot.com',
+  messagingSenderId: '1085385987618',
+  appId: '1:1085385987618:web:5b51af94a37e6e1bcb1c7b',
+  measurementId: 'G-V087D89QKG',
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
 const prayers = [
   'Fajr',
@@ -72,34 +99,96 @@ export default function Component() {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
   const [showSaveSuccess, setShowSaveSuccess] = useState(false);
-  const [
-    showAllPrayedInJamaatNotification,
-    setShowAllPrayedInJamaatNotification,
-  ] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [isSigningIn, setIsSigningIn] = useState(false);
+  const [signInError, setSignInError] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    const savedEntries = localStorage.getItem('prayerEntries');
-    if (savedEntries) {
-      setEntries(JSON.parse(savedEntries));
-    }
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setUser(user);
+      if (user) {
+        fetchEntries(user.uid);
+      }
+    });
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
-    const currentEntry = getCurrentEntry();
+    if (user) {
+      fetchEntryForDate(format(currentDate, 'yyyy-MM-dd'));
+    }
+  }, [currentDate, user]);
 
-    // Check if all prayers are Prayed, considering the conditions for Chast and Tahajjud
-    const allPrayedInJamaat = prayers.every((prayer) => {
-      const status = currentEntry.statuses[prayer];
+  const signIn = async () => {
+    setIsSigningIn(true);
+    setSignInError(null);
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (error) {
+      console.error('Error signing in with Google', error);
+      setSignInError('Failed to sign in. Please try again.');
+    } finally {
+      setIsSigningIn(false);
+    }
+  };
 
-      if (prayer === 'Tahajjud' || prayer === 'Chast') {
-        return status === 'Prayed On Time' || status === 'Not Prayed';
+  const signOut = async () => {
+    try {
+      await auth.signOut();
+      setEntries([]);
+    } catch (error) {
+      console.error('Error signing out', error);
+    }
+  };
+
+  const fetchEntries = async (userId: string) => {
+    try {
+      const q = query(collection(db, 'entries'), where('userId', '==', userId));
+      const querySnapshot = await getDocs(q);
+      const fetchedEntries: PrayerEntry[] = [];
+      querySnapshot.forEach((doc) => {
+        fetchedEntries.push(doc.data() as PrayerEntry);
+      });
+      setEntries(fetchedEntries);
+    } catch (error) {
+      console.error('Error fetching entries', error);
+    }
+  };
+
+  const fetchEntryForDate = async (date: string) => {
+    if (!user) return;
+
+    try {
+      const docRef = doc(db, 'entries', `${user.uid}_${date}`);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data() as PrayerEntry;
+        setEntries((prev) => {
+          const index = prev.findIndex((entry) => entry.date === date);
+          if (index !== -1) {
+            const newEntries = [...prev];
+            newEntries[index] = data;
+            return newEntries;
+          } else {
+            return [...prev, data];
+          }
+        });
       } else {
-        return status === 'Prayed In Jamaat';
+        setEntries((prev) => {
+          const index = prev.findIndex((entry) => entry.date === date);
+          if (index === -1) {
+            return [...prev, { date, statuses: {} }];
+          }
+          return prev;
+        });
       }
-    });
-
-    setShowAllPrayedInJamaatNotification(allPrayedInJamaat);
-  }, [entries, currentDate]);
+    } catch (error) {
+      console.error('Error fetching entry for date', error);
+    }
+  };
 
   const handleDateSelect = (selectedDate: Date | undefined) => {
     if (selectedDate) {
@@ -138,13 +227,13 @@ export default function Component() {
   const getStatusColor = (status: PrayerStatus) => {
     switch (status) {
       case 'Not Prayed':
-        return 'text-white bg-colorRed';
+        return 'bg-colorRed text-white';
       case 'Prayed On Time':
-        return 'text-white bg-colorBlue';
-      case 'Prayed In Jamaat':
-        return 'text-white bg-colorGreen';
+        return 'bg-colorBlue text-white';
       case 'Prayed But Qaza':
-        return 'text-white bg-colorPurple';
+        return 'bg-colorPurple text-white';
+      case 'Prayed In Jamaat':
+        return 'bg-colorGreen text-white';
       default:
         return '';
     }
@@ -158,11 +247,28 @@ export default function Component() {
     );
   };
 
-  const handleSave = () => {
-    localStorage.setItem('prayerEntries', JSON.stringify(entries));
-    setIsSaveDialogOpen(false);
-    setShowSaveSuccess(true);
-    setTimeout(() => setShowSaveSuccess(false), 3000);
+  const handleSave = async () => {
+    if (!user) return;
+    setIsSaving(true);
+
+    const currentEntry = getCurrentEntry();
+    try {
+      await setDoc(
+        doc(db, 'entries', `${user.uid}_${currentEntry.date}`),
+        {
+          ...currentEntry,
+          userId: user.uid,
+        },
+        { merge: true }
+      );
+      setIsSaveDialogOpen(false);
+      setShowSaveSuccess(true);
+      setTimeout(() => setShowSaveSuccess(false), 3000);
+    } catch (error) {
+      console.error('Error saving entry', error);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const getPieChartData = () => {
@@ -183,27 +289,68 @@ export default function Component() {
     }));
   };
 
+  if (!user) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <h1 className="text-2xl font-bold mb-4">Welcome to Prayer Tracker</h1>
+        <Button
+          onClick={signIn}
+          disabled={isSigningIn}
+          className="bg-white text-black border-2 border-black hover:text-white text-xs font-semibold"
+        >
+          {' '}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            x="0px"
+            y="0px"
+            width="24"
+            height="24"
+            viewBox="0 0 48 48"
+          >
+            <path
+              fill="#fbc02d"
+              d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12	s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20	s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
+            ></path>
+            <path
+              fill="#e53935"
+              d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039	l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
+            ></path>
+            <path
+              fill="#4caf50"
+              d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36	c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"
+            ></path>
+            <path
+              fill="#1565c0"
+              d="M43.611,20.083L43.595,20L42,20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571	c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
+            ></path>
+          </svg>
+          <span className="pl-4">
+            {isSigningIn ? 'Signing in...' : 'Sign in with Google'}
+          </span>
+        </Button>
+        {signInError && (
+          <Alert variant="destructive" className="mt-4">
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{signInError}</AlertDescription>
+          </Alert>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="w-full max-w-4xl mx-auto p-4 space-y-4">
-      <h2 className="text-2xl font-bold text-center mb-6">
-        Daily Prayer Tracker
-      </h2>
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">Daily Prayer Tracker</h2>
+        <Button onClick={signOut} className="text-xs bg-colorRed text-white">
+          Sign Out
+        </Button>
+      </div>
       {showSaveSuccess && (
         <Alert className="mb-4">
           <AlertTitle>Success</AlertTitle>
           <AlertDescription>
-            Your prayer entries have been saved successfully.
-          </AlertDescription>
-        </Alert>
-      )}
-      {showAllPrayedInJamaatNotification && (
-        <Alert className="mb-4 success border-colorGreen border-2">
-          <AlertTitle>Congratulations!</AlertTitle>
-          <AlertDescription>
-            All fard prayers for{' '}
-            <span className="text-colorBlue">{format(currentDate, 'PPP')}</span>{' '}
-            have been Prayed in
-            <span className=" text-colorGreen font-bold"> Jamaat</span>
+            Your prayer entry has been saved successfully.
           </AlertDescription>
         </Alert>
       )}
@@ -254,9 +401,9 @@ export default function Component() {
                 </label>
                 <Select
                   value={getCurrentEntry().statuses[prayer] || ''}
-                  onValueChange={(value) => {
-                    handlePrayerStatusChange(prayer, value as PrayerStatus);
-                  }}
+                  onValueChange={(value) =>
+                    handlePrayerStatusChange(prayer, value as PrayerStatus)
+                  }
                 >
                   <SelectTrigger
                     id={prayer}
@@ -267,29 +414,19 @@ export default function Component() {
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Not Prayed" className="text-colorRed">
-                      Not Prayed
-                    </SelectItem>
-                    <SelectItem
-                      value="Prayed On Time"
-                      className="text-colorBlue"
-                    >
+                    <SelectItem value="Not Prayed">Not Prayed</SelectItem>
+                    <SelectItem value="Prayed On Time">
                       Prayed On Time
                     </SelectItem>
-                    <SelectItem
-                      value="Prayed But Qaza"
-                      className="text-colorPurple"
-                    >
-                      Prayed But Qaza
-                    </SelectItem>
-                    {/* Conditionally render the 'Prayed in Jamaat' option */}
                     {prayer !== 'Tahajjud' && prayer !== 'Chast' && (
-                      <SelectItem
-                        value="Prayed In Jamaat"
-                        className="text-colorGreen"
-                      >
-                        Prayed In Jamaat
-                      </SelectItem>
+                      <>
+                        <SelectItem value="Prayed In Jamaat">
+                          Prayed In Jamaat
+                        </SelectItem>
+                        <SelectItem value="Prayed But Qaza">
+                          Prayed But Qaza
+                        </SelectItem>
+                      </>
                     )}
                   </SelectContent>
                 </Select>
@@ -297,15 +434,15 @@ export default function Component() {
             ))}
           </div>
           <div className="mt-8 h-64">
-            <ResponsiveContainer width="100%" height="100%" className="text-xs">
-              <PieChart>
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart className="text-xs rounded border-2">
                 <Pie
                   data={getPieChartData()}
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  outerRadius={65}
-                  innerRadius={35}
+                  outerRadius={50}
+                  innerRadius={25}
                   fill="#8884d8"
                   dataKey="value"
                   label={({ name, percent }) =>
@@ -331,7 +468,7 @@ export default function Component() {
       <div className="flex justify-end">
         <Dialog open={isSaveDialogOpen} onOpenChange={setIsSaveDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="mt-4">Save Progress</Button>
+            <Button className="mt-4">Save Entry</Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
@@ -347,7 +484,9 @@ export default function Component() {
               >
                 Cancel
               </Button>
-              <Button onClick={handleSave}>Save</Button>
+              <Button onClick={handleSave} disabled={isSaving}>
+                {isSaving ? 'Saving...' : 'Save'}
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

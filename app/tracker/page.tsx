@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
+
 import {
   Popover,
   PopoverContent,
@@ -368,8 +369,8 @@ export default function Component() {
                 </label>
                 <Select
                   value={getCurrentEntry().statuses[prayer] || ''}
-                  onValueChange={(value: PrayerStatus) =>
-                    handlePrayerStatusChange(prayer, value)
+                  onValueChange={(value) =>
+                    handlePrayerStatusChange(prayer, value as PrayerStatus)
                   }
                 >
                   <SelectTrigger

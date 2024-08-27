@@ -140,12 +140,14 @@ export default function Component() {
       provider = new GoogleAuthProvider();
     } else if (providerName === 'github') {
       provider = new GithubAuthProvider();
+    } else {
+      console.error('Unsupported provider');
+      return;
     }
 
     try {
       await signInWithPopup(auth, provider);
     } catch (error) {
-      console.error(`Error signing in with ${providerName}`, error);
       setSignInError('Failed to sign in. Please try again.');
     } finally {
       setIsSigningIn(false);

@@ -403,8 +403,12 @@ export default function Component() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => {}}>Profile</DropdownMenuItem>
-            <DropdownMenuItem onClick={signOut}>Sign out</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={signOut}
+              className="cursor-pointer text-colorRed hover:text-white hover:bg-colorRed"
+            >
+              Sign out
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
@@ -417,7 +421,7 @@ export default function Component() {
         </Alert>
       )}
       {showConfetti && (
-        <Alert className="mb-4 bg-green-100 border-green-400 text-green-700">
+        <Alert className="mb-4 bg-colorGreen border-colorGreen text-white shadow-xl">
           <AlertTitle>Congratulations!</AlertTitle>
           <AlertDescription>
             All your Fard prayers for{' '}
@@ -486,16 +490,30 @@ export default function Component() {
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Not Prayed">Not Prayed</SelectItem>
-                    <SelectItem value="Prayed On Time">
+                    <SelectItem
+                      value="Not Prayed"
+                      className="text-colorRed cursor-pointer"
+                    >
+                      Not Prayed
+                    </SelectItem>
+                    <SelectItem
+                      value="Prayed On Time"
+                      className="text-colorBlue cursor-pointer"
+                    >
                       Prayed On Time
                     </SelectItem>
                     {prayer !== 'Tahajjud' && prayer !== 'Chast' && (
                       <>
-                        <SelectItem value="Prayed In Jamaat">
+                        <SelectItem
+                          value="Prayed In Jamaat"
+                          className="text-colorGreen cursor-pointer"
+                        >
                           Prayed In Jamaat
                         </SelectItem>
-                        <SelectItem value="Prayed But Qaza">
+                        <SelectItem
+                          value="Prayed But Qaza"
+                          className="text-colorPurple cursor-pointer"
+                        >
                           Prayed But Qaza
                         </SelectItem>
                       </>

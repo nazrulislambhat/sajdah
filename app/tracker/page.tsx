@@ -1,11 +1,10 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, User } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
-
 import {
   Popover,
   PopoverContent,
@@ -42,7 +41,7 @@ import {
   getAuth,
   signInWithPopup,
   GoogleAuthProvider,
-  User,
+  User as FirebaseUser,
 } from 'firebase/auth';
 import {
   getFirestore,
@@ -54,6 +53,16 @@ import {
   where,
   getDocs,
 } from 'firebase/firestore';
+import Confetti from 'react-confetti';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAErADCm3oV3mZft9DlLo69H1kbwUXxuYc',
@@ -78,6 +87,7 @@ const prayers = [
   'Maghrib',
   'Isha',
 ];
+const fardPrayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
 type PrayerStatus =
   | 'Not Prayed'
   | 'Prayed On Time'
@@ -99,10 +109,11 @@ export default function Component() {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
   const [showSaveSuccess, setShowSaveSuccess] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<FirebaseUser | null>(null);
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [signInError, setSignInError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -176,6 +187,7 @@ export default function Component() {
             return [...prev, data];
           }
         });
+        checkForConfetti(data);
       } else {
         setEntries((prev) => {
           const index = prev.findIndex((entry) => entry.date === date);
@@ -211,17 +223,27 @@ export default function Component() {
             [prayer]: status,
           },
         };
+        checkForConfetti(updatedEntries[existingEntryIndex]);
         return updatedEntries;
       } else {
-        return [
-          ...prev,
-          {
-            date: format(currentDate, 'yyyy-MM-dd'),
-            statuses: { [prayer]: status },
-          },
-        ];
+        const newEntry = {
+          date: format(currentDate, 'yyyy-MM-dd'),
+          statuses: { [prayer]: status },
+        };
+        checkForConfetti(newEntry);
+        return [...prev, newEntry];
       }
     });
+  };
+
+  const checkForConfetti = (entry: PrayerEntry) => {
+    const allFardInJamaat = fardPrayers.every(
+      (prayer) => entry.statuses[prayer] === 'Prayed In Jamaat'
+    );
+    setShowConfetti(allFardInJamaat);
+    if (allFardInJamaat) {
+      setTimeout(() => setShowConfetti(false), 5000);
+    }
   };
 
   const getStatusColor = (status: PrayerStatus) => {
@@ -298,7 +320,6 @@ export default function Component() {
           disabled={isSigningIn}
           className="bg-white text-black border-2 border-black hover:text-white text-xs font-semibold"
         >
-          {' '}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             x="0px"
@@ -340,17 +361,54 @@ export default function Component() {
 
   return (
     <div className="w-full max-w-4xl mx-auto p-4 space-y-4">
+      {showConfetti && <Confetti />}
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Daily Prayer Tracker</h2>
-        <Button onClick={signOut} className="text-xs bg-colorRed text-white">
-          Sign Out
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+              <Avatar className="h-8 w-8">
+                <AvatarImage
+                  src={user.photoURL || undefined}
+                  alt={user.displayName || 'User avatar'}
+                />
+                <AvatarFallback>
+                  {user.displayName ? user.displayName[0] : 'U'}
+                </AvatarFallback>
+              </Avatar>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56" align="end" forceMount>
+            <DropdownMenuLabel className="font-normal">
+              <div className="flex flex-col space-y-1">
+                <p className="text-sm font-medium leading-none">
+                  {user.displayName}
+                </p>
+                <p className="text-xs leading-none text-muted-foreground">
+                  {user.email}
+                </p>
+              </div>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => {}}>Profile</DropdownMenuItem>
+            <DropdownMenuItem onClick={signOut}>Sign out</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       {showSaveSuccess && (
         <Alert className="mb-4">
           <AlertTitle>Success</AlertTitle>
           <AlertDescription>
             Your prayer entry has been saved successfully.
+          </AlertDescription>
+        </Alert>
+      )}
+      {showConfetti && (
+        <Alert className="mb-4 bg-green-100 border-green-400 text-green-700">
+          <AlertTitle>Congratulations!</AlertTitle>
+          <AlertDescription>
+            All your Fard prayers for {format(currentDate, 'PPP')} have been pr
+            ayed in Jamaat.
           </AlertDescription>
         </Alert>
       )}

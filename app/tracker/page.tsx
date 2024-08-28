@@ -65,14 +65,16 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { firebaseConfig } from '../../config/firebaseConfig';
+import Link from 'next/link';
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
 const prayers = [
-  'Fajr',
   'Tahajjud',
+  'Fajr',
+  'Ishraq',
   'Chast',
   'Dhuhr',
   'Asr',
@@ -123,7 +125,7 @@ export default function Component() {
     }
   }, [currentDate, user]);
 
-  const signIn = async (providerName: any) => {
+  const signIn = async (providerName: 'google' | 'github') => {
     setIsSigningIn(true);
     setSignInError(null);
     let provider;
@@ -311,6 +313,10 @@ export default function Component() {
     }));
   };
 
+  const goToToday = () => {
+    setCurrentDate(new Date());
+  };
+
   if (!user) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen gap-2">
@@ -403,6 +409,9 @@ export default function Component() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <Link href="/profile">Profile</Link>
+            </DropdownMenuItem>
             <DropdownMenuItem
               onClick={signOut}
               className="cursor-pointer text-colorRed hover:text-white hover:bg-colorRed"
@@ -432,8 +441,19 @@ export default function Component() {
       )}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg font-semibold">
-            Prayer Entry - {format(currentDate, 'PPP')}
+          <CardTitle className="text-lg font-semibold flex justify-between items-center">
+            <div>
+              Prayer Entry -{' '}
+              <span className="bg-colorPurple text-white px-2 rounded py-2">
+                {format(currentDate, 'PPP')}
+              </span>
+            </div>
+            <Button
+              onClick={goToToday}
+              className="text-colorBlue rounded-none p-0 hover:border-colorRed  border-colorBlue border-b-2 bg-transparent hover:text-colorRed hover:bg-transparent text-xs font-semibold"
+            >
+              Today
+            </Button>
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -492,32 +512,34 @@ export default function Component() {
                   <SelectContent>
                     <SelectItem
                       value="Not Prayed"
-                      className="text-colorRed cursor-pointer"
+                      className="text-colorRed cursor-pointer text-xs"
                     >
                       Not Prayed
                     </SelectItem>
                     <SelectItem
                       value="Prayed On Time"
-                      className="text-colorBlue cursor-pointer"
+                      className="text-colorBlue cursor-pointer text-xs"
                     >
                       Prayed On Time
                     </SelectItem>
-                    {prayer !== 'Tahajjud' && prayer !== 'Chast' && (
-                      <>
-                        <SelectItem
-                          value="Prayed In Jamaat"
-                          className="text-colorGreen cursor-pointer"
-                        >
-                          Prayed In Jamaat
-                        </SelectItem>
-                        <SelectItem
-                          value="Prayed But Qaza"
-                          className="text-colorPurple cursor-pointer"
-                        >
-                          Prayed But Qaza
-                        </SelectItem>
-                      </>
-                    )}
+                    {prayer !== 'Tahajjud' &&
+                      prayer !== 'Chast' &&
+                      prayer !== 'Ishraq' && (
+                        <>
+                          <SelectItem
+                            value="Prayed In Jamaat"
+                            className="text-colorGreen cursor-pointer text-xs"
+                          >
+                            Prayed In Jamaat
+                          </SelectItem>
+                          <SelectItem
+                            value="Prayed But Qaza"
+                            className="text-colorPurple cursor-pointer text-xs"
+                          >
+                            Prayed But Qaza
+                          </SelectItem>
+                        </>
+                      )}
                   </SelectContent>
                 </Select>
               </div>

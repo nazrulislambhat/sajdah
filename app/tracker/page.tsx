@@ -442,12 +442,7 @@ export default function Component() {
       <Card>
         <CardHeader>
           <CardTitle className="text-lg font-semibold flex justify-between items-center">
-            <div>
-              Prayer Entry -{' '}
-              <span className="bg-colorPurple text-white px-2 rounded py-2">
-                {format(currentDate, 'PPP')}
-              </span>
-            </div>
+            <div>Prayer Entry - {format(currentDate, 'PPP')}</div>
             <Button
               onClick={goToToday}
               className="text-colorBlue rounded-none p-0 hover:border-colorRed  border-colorBlue border-b-2 bg-transparent hover:text-colorRed hover:bg-transparent text-xs font-semibold"

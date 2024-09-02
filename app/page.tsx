@@ -13,6 +13,9 @@ export default function Home() {
       <Link href="/tracker" className="text-blue-700 underline">
         Prayer Tracker (v0.1 alpha)
       </Link>
+      <Link href="/dhikr" className="text-blue-700 underline">
+        Dhikr Tracker (v0.1 alpha)
+      </Link>
     </main>
   );
 }

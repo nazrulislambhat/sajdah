@@ -13,9 +13,9 @@ const fontSans = FontSans({
   variable: '--font-sans',
 });
 export const metadata: Metadata = {
-  title: 'SalahFlow - Your Personal Deen Companion',
+  title: 'Sajdah - Your Personal Deen Companion',
   description:
-    'Welcome to the SalahFlow App! This app is designed to assist you in various aspects of your daily spiritual practices. Below are the features and functionalities provided by this application',
+    'Welcome to the Sajdah App! This app is designed to assist you in various aspects of your daily spiritual practices. Below are the features and functionalities provided by this application',
 };
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

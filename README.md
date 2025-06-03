@@ -1,5 +1,5 @@
 
-# SalahFlow App
+# Sajdah App
 
 Welcome to the SalahFlow App! This app is designed to assist you in various aspects of your daily spiritual practices. Below are the features and functionalities provided by this application:
 
@@ -58,13 +58,13 @@ Welcome to the SalahFlow App! This app is designed to assist you in various aspe
 
 ## Installation:
 
-- Vist out website [SalahFlow](https://salahflow.com) to download/use the app.
+- Vist out website [Sajdah](https://sajdah.vercel.app) to download/use the app.
 - Download and install the ISalahFlow App from the App Store (for iOS) or Google Play Store (for Android). - Coming Soon!
 - Follow the on-screen instructions for initial setup and permissions.
 - Enjoy the various features provided to enhance your spiritual journey.
 
 ## Feedback:
 
-We value your feedback and suggestions to improve our app. Please feel free to reach out to us via email at [support@salahflow.com](mailto:support@salahflow.com) with any inquiries, comments, or concerns.
+We value your feedback and suggestions to improve our app. Please feel free to reach out to us via email at [nazrul@stacknothing.com](mailto:nazrul@stacknothing.com) with any inquiries, comments, or concerns.
 
 Thank you for choosing the Islamic Companion App to support you in your daily spiritual practices!

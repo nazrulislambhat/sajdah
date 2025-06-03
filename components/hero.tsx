@@ -1,3 +1,3 @@
 export default function Hero() {
-  return <div className="boxed bg-YellowSalahSync">hero</div>;
+  return <div className="boxed bg-Yellowsajdah">hero</div>;
 }

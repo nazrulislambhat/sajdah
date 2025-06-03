@@ -1,0 +1,43 @@
+{
+  "project_name": "Sajdah",
+  "previous_name": "SalahSync",
+  "website": "https://sajdah.vercel.app",
+  "short_description": "A modern Islamic productivity app that helps Muslims stay consistent with salah, ibadah, and spiritual habits — clean, minimal, and syncs beautifully across devices.",
+  "tech_stack": {
+    "frontend": ["React", "Next.js", "Tailwind CSS", "Framer Motion"],
+    "backend": ["Firebase", "IndexedDB", "Third-party prayer time APIs"],
+    "auth": ["Google OAuth", "Firebase Auth"],
+    "features": ["PWA support", "Offline functionality", "Real-time sync"]
+  },
+  "current_features": [
+    "Location-aware prayer times",
+    "Hijri/Gregorian calendar sync",
+    "Custom reminders for salah, fasting, adhkar",
+    "Google Auth and user profile sync",
+    "Offline-first with IndexedDB",
+    "Minimal UI with Framer Motion animations"
+  ],
+  "looking_for": {
+    "roles": [
+      "Frontend React Developer",
+      "Co-founder (Product/Tech)",
+      "Backend or Firebase expert",
+      "Data/Analytics person for habit insights"
+    ],
+    "functionality_help": [
+      "Prayer tracking with streaks",
+      "Worship planner with stacking logic",
+      "Group features (accountability circles)",
+      "Weekly insights and spiritual analytics",
+      "Integration with Notion or Google Calendar"
+    ]
+  },
+  "why_it_matters": "There are millions of Muslims seeking spiritual consistency, but most Islamic apps are either outdated or noisy. Deenly offers a focused, modern solution built for the mindful Muslim who wants to track salah, build ibadah habits, and grow spiritually — all without clutter.",
+  "contact": {
+    "email": "nazrul@stacknothing.com",
+    "twitter": "@stacknothing",
+    "personal_site": "https://stacknothing.com"
+  },
+  "fun_fact": "Built and shipped this project solo while working full-time as a frontend engineer",
+  "status": "Active — MVP live, looking for collaborators to expand features and polish the experience."
+}

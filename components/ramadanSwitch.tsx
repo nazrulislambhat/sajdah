@@ -6,9 +6,7 @@ export default function RamadanSwitch() {
 
   return (
     <div className="flex flex-col items-center gap-2">
-      <h2 className="text-PrimarySalahSync text-xl font-semibold">
-        Ramadan mode
-      </h2>
+      <h2 className="text-Primarysajdah text-xl font-semibold">Ramadan mode</h2>
       <Switch
         isSelected={isSelected}
         onValueChange={setIsSelected}

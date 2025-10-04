@@ -10,12 +10,6 @@ export default function Home() {
   return (
     <main className="min-h-screen boxed bg-Lightsajdah flex flex-col gap-4 xl:gap-8 items-center ">
       <TasbeehCounter />
-      <Link href="/tracker" className="text-blue-700 underline">
-        Prayer Tracker (v0.1 alpha)
-      </Link>
-      <Link href="/dhikr" className="text-blue-700 underline">
-        Dhikr Tracker (v0.1 alpha)
-      </Link>
     </main>
   );
 }

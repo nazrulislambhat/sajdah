@@ -20,43 +20,14 @@ const config = {
     },
     extend: {
       colors: {
-        border: 'hsl(var(--border))',
-        colorRed: '#F22B29',
-        colorGreen: '#2D936C',
-        colorBlue: '#3B28CC',
-        colorPurple: '#360568',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
-        },
-        secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
-        },
-        destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
-        },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
-        },
-        accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
-        },
-        popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
-        },
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
-        },
+        primarySajdah: '#35FF69',
+        secondarySajdah: '#6320EE',
+        lightSajdah: '#F8F0FB',
+        lightestSajdah: '#EAF6FF',
+        darkSajdah: '#1B262C',
+        darkishSajdah: '#0A1014',
+        lightDarkSajdah: '#16262E',
+        redSajdah: '#F72C25',
       },
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],

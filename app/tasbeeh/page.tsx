@@ -71,18 +71,8 @@ export default function TasbeehCounter() {
     }
   };
 
-  // const readSelectedDhikr = () => {
-  //   if ('speechSynthesis' in window) {
-  //     const speech = new SpeechSynthesisUtterance(selectedDhikr);
-  //     speech.lang = 'ar'; // Set the language to Arabic if needed
-  //     speechSynthesis.speak(speech);
-  //   } else {
-  //     console.log('Text-to-speech not supported');
-  //   }
-  // };
-
   return (
-    <div className="min-h-screen boxed bg-Lightsajdah ">
+    <div className="min-h-screen boxed bg-primarySajdah ">
       <motion.div
         initial={{ opacity: 0, scale: 0.5 }} // Initial animation when component loads
         animate={{ opacity: 1, scale: 1 }} // Animation when component is rendered
@@ -103,17 +93,6 @@ export default function TasbeehCounter() {
 
         <h2 className="text-2xl min-w-80 w-80 mb-4 text-wrap flex items-center justify-center text-center text-Secondarysajdah break-words">
           {selectedDhikr}
-          {/* {selectedDhikr && ( // Render the button only when selectedDhikr is not empty
-          <button className="speaker-icon" onClick={readSelectedDhikr}>
-            <Image
-              src={SpeakerIcon}
-              alt="Speaker icon"
-              width={16}
-              height={16}
-              className="min-w-4 min-h-4"
-            />
-          </button>
-        )} */}
         </h2>
 
         <motion.h2
@@ -126,7 +105,7 @@ export default function TasbeehCounter() {
           {count}
         </motion.h2>
         <motion.button
-          className={`text-6xl rounded-full p-12 max-h-8 max-w-8 text-Lightsajdah flex items-center flex-col justify-center bg-Primarysajdah transition duration-300 ease-in-out transform hover:scale-105 mb-6 ${
+          className={`text-6xl rounded-full p-12 max-h-8 max-w-8 text-lightSajdah flex items-center flex-col justify-center bg-primarySajdah border-primarySajdah transition duration-300 ease-in-out transform hover:scale-105 mb-6 ${
             !selectedDhikr && 'opacity-50'
           }`}
           onClick={incrementCount}

@@ -63,10 +63,10 @@ export default function HadithDisplay() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      <Card className="bg-white shadow-lg border-none">
-        <CardHeader className="bg-primarySajdah/5 border-b border-primarySajdah/10">
-          <CardTitle className="flex items-center gap-2 text-primarySajdah">
-            <BookOpen className="h-5 w-5" />
+      <Card className="bg-white shadow-xl border-none rounded-3xl overflow-hidden">
+        <CardHeader className="bg-secondarySajdah/10 p-6 border-b border-secondarySajdah/5">
+          <CardTitle className="flex items-center gap-2 text-secondarySajdah">
+            <BookOpen className="h-6 w-6" />
             <span>Sahih Bukhari</span>
           </CardTitle>
         </CardHeader>
@@ -79,7 +79,7 @@ export default function HadithDisplay() {
                 <div className="text-sm text-gray-500 font-medium uppercase tracking-wide">
                   Hadith #{hadith.hadithNumber}
                 </div>
-                <blockquote className="text-xl text-gray-800 leading-relaxed font-serif italic border-l-4 border-primarySajdah pl-4">
+                <blockquote className="text-xl text-gray-800 leading-relaxed font-serif italic border-l-4 border-secondarySajdah pl-6 py-2 bg-gray-50 rounded-r-lg">
                   &quot;{hadith.text}&quot;
                 </blockquote>
                 {/* Note: The API response structure might vary. Adjusting based on common schema. 

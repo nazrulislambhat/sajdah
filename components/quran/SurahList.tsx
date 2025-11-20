@@ -76,14 +76,14 @@ export default function SurahList() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredSurahs.map((surah) => (
           <Link href={`/quran/${surah.number}`} key={surah.number}>
-            <Card className="hover:shadow-md transition-shadow cursor-pointer border-darkSajdah/10 hover:border-darkSajdah/30">
-              <CardContent className="p-4 flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className="bg-darkSajdah/10 text-darkSajdah font-bold w-10 h-10 rounded-full flex items-center justify-center text-sm">
+            <Card className="h-full hover:shadow-lg transition-all duration-300 cursor-pointer border-none shadow-sm rounded-3xl overflow-hidden group bg-white">
+              <div className="bg-primarySajdah/10 p-4 flex items-center justify-between group-hover:bg-primarySajdah/20 transition-colors">
+                <div className="flex items-center gap-3">
+                  <div className="bg-white text-primarySajdah font-bold w-10 h-10 rounded-full flex items-center justify-center shadow-sm">
                     {surah.number}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-800">
+                    <h3 className="font-bold text-gray-800">
                       {surah.englishName}
                     </h3>
                     <p className="text-xs text-gray-500">
@@ -91,11 +91,13 @@ export default function SurahList() {
                     </p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="font-amiri text-xl text-darkSajdah">
+              </div>
+              <CardContent className="p-4 flex items-center justify-between bg-white">
+                <div className="text-right w-full">
+                  <p className="font-amiri text-2xl text-primarySajdah mb-1">
                     {surah.name}
                   </p>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">
                     {surah.numberOfAyahs} Ayahs
                   </p>
                 </div>

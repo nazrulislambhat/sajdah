@@ -396,65 +396,65 @@ export default function DhikrCounter() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         {allDhikrs.concat(defaultDhikrs).map(
           (dhikr) =>
-            visibleDhikrs[dhikr] && (
-              <Card key={dhikr} className=" text-colorBlue ">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">{dhikr}</CardTitle>
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-[#F22B29] hover:text-[#2D936C]"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                        <span className="sr-only">Remove {dhikr}</span>
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent className=" text-colorBlue ">
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                        <AlertDialogDescription className="text-colorPurple">
-                          This will remove the dhikr card and delete all
-                          associated data. This action cannot
-                          be undone.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel className=" text-colorBlue hover:">
-                          Cancel
-                        </AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={() => removeDhikr(dhikr)}
-                          className="bg-[#F22B29] hover:"
+              visibleDhikrs[dhikr] && (
+                <Card key={dhikr} className="text-gray-800 border-none shadow-sm rounded-3xl overflow-hidden bg-white">
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4 bg-redSajdah/10 p-6">
+                    <CardTitle className="text-lg font-bold text-redSajdah">{dhikr}</CardTitle>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-redSajdah hover:text-red-700 hover:bg-redSajdah/20 rounded-full h-8 w-8 p-0"
                         >
-                          Continue
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{counts[dhikr] || 0}</div>
-                  <div className="flex space-x-2 mt-2">
-                    <Button
-                      onClick={() => incrementCount(dhikr)}
-                      className=" hover:bg-[#F22B29]"
-                    >
-                      <Plus className="h-4 w-4" />
-                      <span className="sr-only">Increase {dhikr} count</span>
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => resetCount(dhikr)}
-                      className="text-[#2D936C] hover: hover:text-colorBlue"
-                    >
-                      Reset
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            )
+                          <Trash2 className="h-4 w-4" />
+                          <span className="sr-only">Remove {dhikr}</span>
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent className="rounded-3xl">
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This will remove the dhikr card and delete all
+                            associated data. This action cannot
+                            be undone.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel className="rounded-full">
+                            Cancel
+                          </AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => removeDhikr(dhikr)}
+                            className="bg-redSajdah hover:bg-red-600 rounded-full"
+                          >
+                            Continue
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <div className="text-4xl font-bold text-center mb-6 text-gray-800">{counts[dhikr] || 0}</div>
+                    <div className="flex space-x-3 justify-center">
+                      <Button
+                        onClick={() => incrementCount(dhikr)}
+                        className="bg-redSajdah hover:bg-red-600 text-white rounded-full w-12 h-12 p-0 shadow-md hover:shadow-lg transition-all"
+                      >
+                        <Plus className="h-6 w-6" />
+                        <span className="sr-only">Increase {dhikr} count</span>
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => resetCount(dhikr)}
+                        className="text-gray-500 hover:text-redSajdah border-gray-200 hover:border-redSajdah rounded-full px-6"
+                      >
+                        Reset
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              )
         )}
       </div>
       <div className="flex justify-between items-center mb-4">
@@ -469,47 +469,47 @@ export default function DhikrCounter() {
           </Button>
         )}
       </div>
-      <Card className="mb-4  text-colorBlue ">
-        <CardHeader>
-          <CardTitle>Add New Dhikr</CardTitle>
+      <Card className="mb-8 border-none shadow-sm rounded-3xl overflow-hidden bg-white">
+        <CardHeader className="bg-gray-50 p-6 border-b border-gray-100">
+          <CardTitle className="text-gray-700">Add New Dhikr</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="flex space-x-2">
+        <CardContent className="p-6">
+          <div className="flex space-x-4">
             <Input
               value={newDhikr}
               onChange={(e) => setNewDhikr(e.target.value)}
-              placeholder="Enter new dhikr"
-              className=" text-colorBlue placeholder-gray-400 "
+              placeholder="Enter new dhikr name..."
+              className="rounded-full border-gray-200 focus:border-redSajdah focus:ring-redSajdah"
             />
-            <Button onClick={addNewDhikr} className=" hover:bg-[#F22B29]">
+            <Button onClick={addNewDhikr} className="bg-redSajdah hover:bg-red-600 text-white rounded-full px-8">
               Add
             </Button>
           </div>
         </CardContent>
       </Card>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card className=" text-colorBlue ">
-          <CardHeader>
-            <CardTitle>Daily Dhikr Chart</CardTitle>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <Card className="border-none shadow-sm rounded-3xl overflow-hidden bg-white">
+          <CardHeader className="bg-redSajdah/5 p-6">
+            <CardTitle className="text-redSajdah">Daily Activity</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-6 flex justify-center">
             <Calendar
               mode="single"
               selected={date}
               onSelect={(newDate) => newDate && setDate(newDate)}
-              className="rounded-md "
+              className="rounded-md"
               classNames={{
-                day_selected: 'hover:bg-colorRed',
-                day_today: 'bg-colorRed rounded text-white  !rounded-full',
+                day_selected: 'bg-redSajdah text-white hover:bg-redSajdah/90',
+                day_today: 'bg-gray-100 text-gray-900 font-bold',
               }}
             />
           </CardContent>
         </Card>
-        <Card className=" text-colorBlue ">
-          <CardHeader>
-            <CardTitle>Dhikr Summary</CardTitle>
+        <Card className="border-none shadow-sm rounded-3xl overflow-hidden bg-white">
+          <CardHeader className="bg-redSajdah/5 p-6">
+            <CardTitle className="text-redSajdah">Summary</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-6">
             <DhikrChart />
           </CardContent>
         </Card>

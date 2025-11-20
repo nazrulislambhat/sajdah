@@ -56,7 +56,7 @@ export default function HadithDisplay() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-Primarysajdah"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primarySajdah"></div>
       </div>
     );
   }
@@ -64,8 +64,8 @@ export default function HadithDisplay() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <Card className="bg-white shadow-lg border-none">
-        <CardHeader className="bg-Primarysajdah/5 border-b border-Primarysajdah/10">
-          <CardTitle className="flex items-center gap-2 text-Primarysajdah">
+        <CardHeader className="bg-primarySajdah/5 border-b border-primarySajdah/10">
+          <CardTitle className="flex items-center gap-2 text-primarySajdah">
             <BookOpen className="h-5 w-5" />
             <span>Sahih Bukhari</span>
           </CardTitle>
@@ -79,8 +79,8 @@ export default function HadithDisplay() {
                 <div className="text-sm text-gray-500 font-medium uppercase tracking-wide">
                   Hadith #{hadith.hadithNumber}
                 </div>
-                <blockquote className="text-xl text-gray-800 leading-relaxed font-serif italic border-l-4 border-Primarysajdah pl-4">
-                  "{hadith.text}"
+                <blockquote className="text-xl text-gray-800 leading-relaxed font-serif italic border-l-4 border-primarySajdah pl-4">
+                  &quot;{hadith.text}&quot;
                 </blockquote>
                 {/* Note: The API response structure might vary. Adjusting based on common schema. 
                     The fawazahmed0 API usually returns 'text' for the hadith content.
@@ -97,7 +97,7 @@ export default function HadithDisplay() {
       <div className="flex justify-center">
         <Button
           onClick={fetchRandomHadith}
-          className="bg-Primarysajdah hover:bg-Primarysajdah/90 text-white gap-2"
+          className="bg-primarySajdah hover:bg-primarySajdah/90 text-white gap-2"
         >
           <RefreshCw className="h-4 w-4" />
           Read Another Hadith

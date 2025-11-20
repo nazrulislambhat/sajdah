@@ -5,9 +5,10 @@ import Link from 'next/link';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Clock, BookOpen, Moon, Heart } from 'lucide-react';
+import { Clock, BookOpen, Moon, Heart, ScrollText } from 'lucide-react';
 import PrayerTimesWidget from '@/components/dashboard/PrayerTimesWidget';
 import DhikrWidget from '@/components/dashboard/DhikrWidget';
+import QiblaWidget from '@/components/dashboard/QiblaWidget';
 
 gsap.registerPlugin(useGSAP);
 
@@ -35,23 +36,44 @@ export default function Dashboard() {
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-        {/* Prayer Times Widget - Pastel Blue */}
-        <Link href="/nimaz" className="dashboard-card block h-full">
-          <Card className="h-full bg-[#E3F2FD] border-none shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden relative group">
-            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-              <Clock className="w-24 h-24 text-[#1E88E5]" />
-            </div>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-[#1565C0]">
-                <Clock className="w-5 h-5" />
-                Prayer Times
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <PrayerTimesWidget />
-            </CardContent>
-          </Card>
-        </Link>
+        {/* Prayer Times and Qibla Widgets */}
+        <div className="dashboard-card md:col-span-2 lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Prayer Times Widget */}
+          <Link href="/nimaz" className="block h-full">
+            <Card className="h-full bg-[#E3F2FD] border-none shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden relative group">
+              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <Clock className="w-24 h-24 text-[#1E88E5]" />
+              </div>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-[#1565C0]">
+                  <Clock className="w-5 h-5" />
+                  Prayer Times
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <PrayerTimesWidget />
+              </CardContent>
+            </Card>
+          </Link>
+
+          {/* Qibla Widget */}
+          <Link href="/qibla" className="block h-full">
+            <Card className="h-full bg-[#F0F4C3] border-none shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden relative group">
+              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <ScrollText className="w-24 h-24 text-[#AFB42B]" />
+              </div>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-[#827717]">
+                  <ScrollText className="w-5 h-5" />
+                  Qibla Direction
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <QiblaWidget />
+              </CardContent>
+            </Card>
+          </Link>
+        </div>
 
         {/* Quran Widget - Pastel Green */}
         <Link href="/quran" className="dashboard-card block h-full">
@@ -87,7 +109,7 @@ export default function Dashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-700 italic">"Actions are judged by intentions..."</p>
+              <p className="text-gray-700 italic">&quot;Actions are judged by intentions...&quot;</p>
               <p className="text-xs text-gray-500 mt-2 text-right">- Sahih Bukhari</p>
             </CardContent>
           </Card>

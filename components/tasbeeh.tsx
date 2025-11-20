@@ -49,27 +49,27 @@ export default function TasbeehCounter() {
 
   const count = (dhikrCounts as any)[selectedDhikr] || 0;
 
+  const playSound = useCallback(() => {
+    const audio = new Audio('/ding.mp3');
+    audio.play();
+  }, []);
+
+  const vibrate = useCallback(() => {
+    if ('vibrate' in navigator) {
+      navigator.vibrate(200);
+    }
+  }, []);
+
+  const playSoundAndVibrate = useCallback(() => {
+    playSound();
+    vibrate();
+  }, [playSound, vibrate]);
+
   useEffect(() => {
     if (count === 33 || count === 66 || count === 100) {
       playSoundAndVibrate();
     }
-  }, [count]);
-
-  const playSoundAndVibrate = () => {
-    playSound();
-    vibrate();
-  };
-
-  const playSound = () => {
-    const audio = new Audio('/ding.mp3');
-    audio.play();
-  };
-
-  const vibrate = () => {
-    if ('vibrate' in navigator) {
-      navigator.vibrate(200);
-    }
-  };
+  }, [count, playSoundAndVibrate]);
 
   // const readSelectedDhikr = () => {
   //   if ('speechSynthesis' in window) {

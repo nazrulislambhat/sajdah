@@ -241,6 +241,9 @@ export default function DhikrCounter() {
       localStorage.setItem(`dhikr_counts_${formatDate(date)}`, JSON.stringify(newCounts));
       if (newVisible) localStorage.setItem('visible_dhikrs', JSON.stringify(newVisible));
       if (newAll) localStorage.setItem('all_dhikrs', JSON.stringify(newAll));
+      
+      // Notify other components
+      window.dispatchEvent(new Event('dhikr-updated'));
   };
 
   const incrementCount = (dhikr: string) => {

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Play, Pause } from 'lucide-react';
 import Link from 'next/link';
 import AudioPlayer from '@/components/ui/AudioPlayer';
+import StickyAudioPlayer from '@/components/quran/StickyAudioPlayer';
 import QuranSettings, { QuranSettingsData } from '@/components/quran/QuranSettings';
 
 interface Ayah {
@@ -38,7 +39,8 @@ export default function SurahDetail({ params }: { params: { id: string } }) {
   const { id } = params;
   const [surah, setSurah] = useState<SurahData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [currentAyahIndex, setCurrentAyahIndex] = useState<number | null>(null);
+  const [activeAyahIndex, setActiveAyahIndex] = useState<number | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
   
   // Settings State
   const [settings, setSettings] = useState<QuranSettingsData>({
@@ -115,41 +117,43 @@ export default function SurahDetail({ params }: { params: { id: string } }) {
 
   // Auto-scroll effect
   useEffect(() => {
-    if (currentAyahIndex !== null && ayahRefs.current[currentAyahIndex]) {
-      ayahRefs.current[currentAyahIndex]?.scrollIntoView({
+    if (activeAyahIndex !== null && ayahRefs.current[activeAyahIndex]) {
+      ayahRefs.current[activeAyahIndex]?.scrollIntoView({
         behavior: 'smooth',
         block: 'center',
       });
     }
-  }, [currentAyahIndex]);
+  }, [activeAyahIndex]);
 
   const handlePlayPause = (index: number) => {
-    if (currentAyahIndex === index) {
-      setCurrentAyahIndex(null); // Pause
+    if (activeAyahIndex === index) {
+      setIsPlaying(!isPlaying);
     } else {
-      setCurrentAyahIndex(index); // Play new
+      setActiveAyahIndex(index);
+      setIsPlaying(true);
     }
   };
 
   const handleAyahEnded = (index: number) => {
     if (surah && index < surah.ayahs.length - 1) {
-      setCurrentAyahIndex(index + 1); // Play next
+      setActiveAyahIndex(index + 1);
+      setIsPlaying(true);
     } else {
-      setCurrentAyahIndex(null); // Stop at end
+      setIsPlaying(false);
     }
   };
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen bg-Lightsajdah">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-Primarysajdah"></div>
+      <div className="flex justify-center items-center h-screen bg-lightSajdah">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primarySajdah"></div>
       </div>
     );
   }
 
   if (!surah) {
     return (
-      <div className="flex justify-center items-center h-screen bg-Lightsajdah">
+      <div className="flex justify-center items-center h-screen bg-lightSajdah">
         <p>Surah not found.</p>
       </div>
     );
@@ -157,7 +161,7 @@ export default function SurahDetail({ params }: { params: { id: string } }) {
 
   // Theme Styles
   const themeStyles = {
-    light: 'bg-Lightsajdah text-gray-900',
+    light: 'bg-lightSajdah text-gray-900',
     sepia: 'bg-[#f4ecd8] text-[#5b4636]',
     dark: 'bg-[#1a1a1a] text-gray-100',
   };
@@ -173,7 +177,7 @@ export default function SurahDetail({ params }: { params: { id: string } }) {
       <div className="max-w-4xl mx-auto">
         <div className="mb-6 flex items-center justify-between sticky top-4 z-40 bg-inherit/80 backdrop-blur-sm p-2 rounded-xl">
           <Link href="/quran">
-            <Button variant="ghost" className="gap-2 hover:bg-Primarysajdah/10">
+            <Button variant="ghost" className="gap-2 hover:bg-primarySajdah/10">
               <ArrowLeft className="h-4 w-4" />
               Back
             </Button>
@@ -187,7 +191,7 @@ export default function SurahDetail({ params }: { params: { id: string } }) {
         {/* Surah Info Card */}
         <Card className={`mb-8 border-none shadow-lg transition-colors duration-300 ${cardThemeStyles[settings.theme]}`}>
           <CardContent className="p-8 text-center">
-            <h1 className="text-4xl font-bold text-Primarysajdah mb-2 font-amiri">
+            <h1 className="text-4xl font-bold text-primarySajdah mb-2 font-amiri">
               {surah.name}
             </h1>
             <h2 className={`text-2xl font-semibold ${settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-800'}`}>
@@ -203,7 +207,7 @@ export default function SurahDetail({ params }: { params: { id: string } }) {
         </Card>
 
         {/* Content Area */}
-        <div className={settings.layout === 'page' ? 'bg-transparent' : 'space-y-6'}>
+        <div className={settings.layout === 'page' ? 'bg-transparent pb-24' : 'space-y-6'}>
           
           {/* Page Layout (Mushaf Style) */}
           {settings.layout === 'page' && (
@@ -212,36 +216,65 @@ export default function SurahDetail({ params }: { params: { id: string } }) {
                   <span 
                     key={ayah.number} 
                     ref={(el) => { ayahRefs.current[index] = el as HTMLDivElement }}
-                    className={`inline transition-colors duration-300 ${currentAyahIndex === index ? 'bg-Primarysajdah/20 rounded px-1' : ''}`}
+                    className={`inline transition-colors duration-300 ${activeAyahIndex === index ? 'bg-primarySajdah/20 rounded px-1' : ''}`}
                   >
                     <span 
-                      className="font-amiri cursor-pointer hover:text-Primarysajdah"
+                      className="font-amiri cursor-pointer hover:text-primarySajdah"
                       style={{ fontSize: `${settings.fontSize}px` }}
                       onClick={() => handlePlayPause(index)}
                     >
                       {ayah.text}
                     </span>
-                    <span className="text-Primarysajdah font-amiri text-xl mx-2">
-                       ۝{ayah.numberInSurah} 
+                    <span className="relative inline-flex items-center justify-center w-10 h-10 mx-1 align-middle">
+                       <span className="text-primarySajdah font-amiri text-4xl leading-none">۝</span>
+                       <span className="absolute text-[0.6em] font-bold text-primarySajdah pt-1">{ayah.numberInSurah.toLocaleString('ar-EG')}</span>
                     </span>
                   </span>
                 ))}
              </div>
           )}
 
+          {/* Sticky Audio Player for Page Mode */}
+          {settings.layout === 'page' && activeAyahIndex !== null && (
+            <StickyAudioPlayer
+              src={surah.ayahs[activeAyahIndex].audio}
+              isPlaying={isPlaying}
+              onPlayPause={() => handlePlayPause(activeAyahIndex)}
+              onEnded={() => handleAyahEnded(activeAyahIndex)}
+              onNext={() => {
+                if (activeAyahIndex < surah.ayahs.length - 1) {
+                  setActiveAyahIndex(activeAyahIndex + 1);
+                  setIsPlaying(true);
+                }
+              }}
+              onPrev={() => {
+                if (activeAyahIndex > 0) {
+                  setActiveAyahIndex(activeAyahIndex - 1);
+                  setIsPlaying(true);
+                }
+              }}
+              ayahNumber={surah.ayahs[activeAyahIndex].numberInSurah}
+              surahName={surah.name}
+              onClose={() => {
+                setIsPlaying(false);
+                setActiveAyahIndex(null);
+              }}
+            />
+          )}
+
           {/* List Layout (Ayah by Ayah) */}
           {settings.layout === 'list' && surah.ayahs.map((ayah, index) => (
             <div key={ayah.number} ref={(el) => { ayahRefs.current[index] = el as HTMLDivElement }}>
-              <Card className={`border-none shadow-sm hover:shadow-md transition-all duration-300 ${cardThemeStyles[settings.theme]} ${currentAyahIndex === index ? 'ring-2 ring-Primarysajdah/50 scale-[1.01]' : ''}`}>
+              <Card className={`border-none shadow-sm hover:shadow-md transition-all duration-300 ${cardThemeStyles[settings.theme]} ${activeAyahIndex === index ? 'ring-2 ring-primarySajdah/50 scale-[1.01]' : ''}`}>
                 <CardContent className="p-6">
                   <div className="flex flex-col gap-6">
                     <div className="flex items-center justify-between border-b border-gray-100/10 pb-4">
-                      <span className="bg-Primarysajdah/10 text-Primarysajdah text-xs font-bold px-3 py-1 rounded-full">
+                      <span className="bg-primarySajdah/10 text-primarySajdah text-xs font-bold px-3 py-1 rounded-full">
                         {surah.number}:{ayah.numberInSurah}
                       </span>
                       <AudioPlayer 
                         src={ayah.audio} 
-                        isPlaying={currentAyahIndex === index}
+                        isPlaying={activeAyahIndex === index && isPlaying}
                         onPlayPause={() => handlePlayPause(index)}
                         onEnded={() => handleAyahEnded(index)}
                       />

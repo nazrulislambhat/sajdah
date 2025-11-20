@@ -1,10 +1,18 @@
 import type { Metadata } from 'next';
-import { Comfortaa, Rubik } from 'next/font/google';
+import { Comfortaa, Rubik, Amiri } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+
 const comfortaa = Comfortaa({ subsets: ['latin'] });
 const rubik = Rubik({ subsets: ['arabic'] });
+const amiri = Amiri({ 
+  subsets: ['arabic'],
+  weight: ['400', '700'],
+  variable: '--font-amiri',
+  display: 'swap',
+});
+
 import { Inter as FontSans } from 'next/font/google';
 import { cn } from '@/lib/utils';
 
@@ -25,7 +33,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <body
         className={cn(
           'min-h-screen bg-background font-sans antialiased pb-24', // Added pb-24 for navbar space
-          fontSans.variable
+          fontSans.variable,
+          amiri.variable
         )}
       >
         <Providers>

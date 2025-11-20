@@ -51,12 +51,12 @@ export default function Navbar() {
             <Link 
               key={item.name} 
               href={item.href}
-              className={`nav-item flex flex-col items-center justify-center w-12 h-12 rounded-full transition-colors duration-200 ${isActive ? 'active text-Primarysajdah bg-Primarysajdah/10' : 'text-gray-500 hover:text-Primarysajdah hover:bg-gray-50'}`}
+              className={`nav-item flex flex-col items-center justify-center w-12 h-12 rounded-full transition-colors duration-200 ${isActive ? 'active text-primarySajdah bg-primarySajdah/10' : 'text-gray-500 hover:text-primarySajdah hover:bg-gray-50'}`}
             >
               <Icon className={`w-5 h-5 ${isActive ? 'fill-current' : ''}`} />
               <span className="sr-only">{item.name}</span>
               {isActive && (
-                <span className="absolute -bottom-1 w-1 h-1 bg-Primarysajdah rounded-full" />
+                <span className="absolute -bottom-1 w-1 h-1 bg-primarySajdah rounded-full" />
               )}
             </Link>
           );

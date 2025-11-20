@@ -7,27 +7,51 @@ export default function DhikrWidget() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+    const fetchCounts = async () => {
+      const date = new Date().toISOString().split('T')[0];
+      
+      // 1. Try Local Storage first (Instant)
+      const localCounts = JSON.parse(localStorage.getItem(`dhikr_counts_${date}`) || '{}');
+      const localTotal = Object.values(localCounts).reduce((a: any, b: any) => a + b, 0) as number;
+      setTotalCount(localTotal);
+      setLoading(false);
+
+      // 2. If logged in, fetch from Cloud and update if needed
+      const user = auth.currentUser;
       if (user) {
         try {
-          // Fetching today's counts
-          const date = new Date().toISOString().split('T')[0];
           const docRef = doc(db, 'users', user.uid, 'dhikr_counts', date);
           const docSnap = await getDoc(docRef);
           
           if (docSnap.exists()) {
             const data = docSnap.data();
-            const total = Object.values(data).reduce((a: any, b: any) => a + b, 0) as number;
-            setTotalCount(total);
+            const cloudTotal = Object.values(data).reduce((a: any, b: any) => a + b, 0) as number;
+            // If cloud has more, update UI (and maybe local? Page handles sync usually)
+            if (cloudTotal > localTotal) {
+               setTotalCount(cloudTotal);
+            }
           }
         } catch (error) {
           console.error('Error fetching dhikr counts:', error);
         }
       }
-      setLoading(false);
-    });
+    };
 
-    return () => unsubscribe();
+    fetchCounts();
+
+    // Listen for local storage changes (e.g. from Dhikr page in another tab)
+    const handleStorageChange = () => {
+      fetchCounts();
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    // Custom event for same-tab updates if needed
+    window.addEventListener('dhikr-updated', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('dhikr-updated', handleStorageChange);
+    };
   }, []);
 
   if (loading) {

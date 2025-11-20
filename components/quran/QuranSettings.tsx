@@ -75,7 +75,7 @@ export default function QuranSettings({ settings, onSettingsChange }: QuranSetti
                 max="48" 
                 value={settings.fontSize} 
                 onChange={(e) => handleChange('fontSize', parseInt(e.target.value))}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-Primarysajdah"
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primarySajdah"
               />
               <span className="text-xl font-bold">A</span>
             </div>
@@ -87,17 +87,17 @@ export default function QuranSettings({ settings, onSettingsChange }: QuranSetti
             <div className="flex gap-2">
               <button 
                 onClick={() => handleChange('theme', 'light')}
-                className={`w-8 h-8 rounded-full bg-white border-2 ${settings.theme === 'light' ? 'border-Primarysajdah ring-2 ring-Primarysajdah/30' : 'border-gray-200'}`}
+                className={`w-8 h-8 rounded-full bg-white border-2 ${settings.theme === 'light' ? 'border-primarySajdah ring-2 ring-primarySajdah/30' : 'border-gray-200'}`}
                 title="Light"
               />
               <button 
                 onClick={() => handleChange('theme', 'sepia')}
-                className={`w-8 h-8 rounded-full bg-[#f4ecd8] border-2 ${settings.theme === 'sepia' ? 'border-Primarysajdah ring-2 ring-Primarysajdah/30' : 'border-transparent'}`}
+                className={`w-8 h-8 rounded-full bg-[#f4ecd8] border-2 ${settings.theme === 'sepia' ? 'border-primarySajdah ring-2 ring-primarySajdah/30' : 'border-transparent'}`}
                 title="Sepia"
               />
               <button 
                 onClick={() => handleChange('theme', 'dark')}
-                className={`w-8 h-8 rounded-full bg-[#1a1a1a] border-2 ${settings.theme === 'dark' ? 'border-Primarysajdah ring-2 ring-Primarysajdah/30' : 'border-transparent'}`}
+                className={`w-8 h-8 rounded-full bg-[#1a1a1a] border-2 ${settings.theme === 'dark' ? 'border-primarySajdah ring-2 ring-primarySajdah/30' : 'border-transparent'}`}
                 title="Dark"
               />
             </div>

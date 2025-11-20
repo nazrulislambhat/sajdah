@@ -73,7 +73,7 @@ export default function AudioPlayer({ src, isPlaying: externalIsPlaying, onPlayP
       <Button
         variant="ghost"
         size="icon"
-        className="h-8 w-8 rounded-full hover:bg-Primarysajdah/10 text-Primarysajdah"
+        className="h-8 w-8 rounded-full hover:bg-primarySajdah/10 text-primarySajdah"
         onClick={togglePlay}
       >
         {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}

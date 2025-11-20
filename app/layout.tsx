@@ -17,16 +17,21 @@ export const metadata: Metadata = {
   description:
     'Welcome to the Sajdah App! This app is designed to assist you in various aspects of your daily spiritual practices. Below are the features and functionalities provided by this application',
 };
+import Navbar from '@/components/ui/Navbar';
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="light max-width bg-background">
       <body
         className={cn(
-          'min-h-screen bg-background font-sans antialiased',
+          'min-h-screen bg-background font-sans antialiased pb-24', // Added pb-24 for navbar space
           fontSans.variable
         )}
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <Navbar />
+        </Providers>
       </body>
     </html>
   );

@@ -130,13 +130,17 @@ export default function DhikrCounter() {
   const [date, setDate] = useState<Date>(new Date());
   const [user, setUser] = useState<User | null>(null);
   const [allDhikrs, setAllDhikrs] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user);
       if (user) {
         fetchData(user.uid);
+      } else {
+        fetchLocalData();
       }
+      setLoading(false);
     });
     return () => unsubscribe();
   }, []);
@@ -144,30 +148,80 @@ export default function DhikrCounter() {
   useEffect(() => {
     if (user) {
       fetchData(user.uid);
+    } else if (!loading) {
+      fetchLocalData();
     }
-  }, [date, user]);
+  }, [date, user, loading]);
 
-  const fetchData = async (userId: string) => {
-    const savedCounts = await getDhikrCounts(userId, formatDate(date));
-    setCounts(savedCounts);
-    const savedVisibleDhikrs = await getVisibleDhikrs(userId);
-    const allUserDhikrs = await getAllDhikrs(userId);
-    setAllDhikrs(allUserDhikrs);
-    const mergedVisibleDhikrs = { ...savedVisibleDhikrs };
-    defaultDhikrs.concat(allUserDhikrs).forEach((dhikr) => {
+  const fetchLocalData = () => {
+    const dateStr = formatDate(date);
+    const localCounts = JSON.parse(localStorage.getItem(`dhikr_counts_${dateStr}`) || '{}');
+    setCounts(localCounts);
+
+    const localVisible = JSON.parse(localStorage.getItem('visible_dhikrs') || '{}');
+    const localAll = JSON.parse(localStorage.getItem('all_dhikrs') || '[]');
+    
+    setAllDhikrs(localAll);
+    
+    const mergedVisibleDhikrs = { ...localVisible };
+    defaultDhikrs.concat(localAll).forEach((dhikr) => {
       if (!(dhikr in mergedVisibleDhikrs)) {
         mergedVisibleDhikrs[dhikr] = true;
       }
     });
     setVisibleDhikrs(mergedVisibleDhikrs);
-    saveVisibleDhikrs(userId, mergedVisibleDhikrs);
+    localStorage.setItem('visible_dhikrs', JSON.stringify(mergedVisibleDhikrs));
+  };
+
+  const fetchData = async (userId: string) => {
+    try {
+      // 1. Fetch Cloud Data
+      const cloudCounts = await getDhikrCounts(userId, formatDate(date));
+      const cloudVisible = await getVisibleDhikrs(userId);
+      const cloudAll = await getAllDhikrs(userId);
+
+      // 2. Fetch Local Data
+      const dateStr = formatDate(date);
+      const localCounts = JSON.parse(localStorage.getItem(`dhikr_counts_${dateStr}`) || '{}');
+      const localVisible = JSON.parse(localStorage.getItem('visible_dhikrs') || '{}');
+      const localAll = JSON.parse(localStorage.getItem('all_dhikrs') || '[]');
+
+      // 3. Merge (Prefer Cloud, but if Cloud is empty/zero and Local has data, use Local? 
+      // Or better: Max(Cloud, Local) for counts to prevent data loss if save failed)
+      const mergedCounts: DhikrCount = { ...cloudCounts };
+      Object.keys(localCounts).forEach(key => {
+        if ((localCounts[key] || 0) > (mergedCounts[key] || 0)) {
+          mergedCounts[key] = localCounts[key];
+        }
+      });
+      
+      // For visible/all, union them
+      const mergedAll = Array.from(new Set([...cloudAll, ...localAll, ...defaultDhikrs]));
+      const mergedVisible = { ...cloudVisible, ...localVisible };
+      mergedAll.forEach(d => {
+         if (defaultDhikrs.includes(d)) mergedVisible[d] = true;
+      });
+
+      setCounts(mergedCounts);
+      setAllDhikrs(mergedAll);
+      setVisibleDhikrs(mergedVisible);
+
+      // Sync back to local to ensure consistency
+      localStorage.setItem(`dhikr_counts_${dateStr}`, JSON.stringify(mergedCounts));
+      localStorage.setItem('visible_dhikrs', JSON.stringify(mergedVisible));
+      localStorage.setItem('all_dhikrs', JSON.stringify(mergedAll));
+
+    } catch (error) {
+      console.error("Error fetching data from Firestore:", error);
+      fetchLocalData();
+    }
   };
 
   const signIn = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
       setUser(result.user);
-      fetchData(result.user.uid);
+      await fetchData(result.user.uid);
     } catch (error) {
       console.error('Error signing in with Google', error);
     }
@@ -177,76 +231,119 @@ export default function DhikrCounter() {
     try {
       await auth.signOut();
       setUser(null);
-      setCounts({});
-      setVisibleDhikrs({});
-      setAllDhikrs([]);
+      fetchLocalData();
     } catch (error) {
       console.error('Error signing out', error);
     }
   };
 
+  const updateLocal = (newCounts: DhikrCount, newVisible?: VisibleDhikrs, newAll?: string[]) => {
+      localStorage.setItem(`dhikr_counts_${formatDate(date)}`, JSON.stringify(newCounts));
+      if (newVisible) localStorage.setItem('visible_dhikrs', JSON.stringify(newVisible));
+      if (newAll) localStorage.setItem('all_dhikrs', JSON.stringify(newAll));
+  };
+
   const incrementCount = (dhikr: string) => {
-    if (user) {
-      setCounts((prevCounts) => ({
-        ...prevCounts,
-        [dhikr]: (prevCounts[dhikr] || 0) + 1,
-      }));
-    }
+    const newCounts = {
+      ...counts,
+      [dhikr]: (counts[dhikr] || 0) + 1,
+    };
+    setCounts(newCounts);
+    updateLocal(newCounts); // Always save local
   };
 
   const resetCount = (dhikr: string) => {
-    if (user) {
-      setCounts((prevCounts) => ({
-        ...prevCounts,
-        [dhikr]: 0,
-      }));
-    }
+    const newCounts = {
+      ...counts,
+      [dhikr]: 0,
+    };
+    setCounts(newCounts);
+    updateLocal(newCounts); // Always save local
   };
 
   const saveAllDhikrs = async () => {
+    // Always save local first
+    updateLocal(counts);
+
     if (user) {
-      await saveDhikrCounts(user.uid, formatDate(date), counts);
+      try {
+        await saveDhikrCounts(user.uid, formatDate(date), counts);
+        alert("Saved to cloud successfully.");
+      } catch (error) {
+        console.error("Error saving to Firestore:", error);
+        alert("Cloud save failed (Permissions). Data saved locally.");
+      }
+    } else {
+      alert("Saved locally.");
     }
   };
 
-  const addNewDhikr = () => {
-    if (newDhikr && !counts.hasOwnProperty(newDhikr) && user) {
+  const addNewDhikr = async () => {
+    if (newDhikr && !counts.hasOwnProperty(newDhikr)) {
       setCounts((prevCounts) => ({ ...prevCounts, [newDhikr]: 0 }));
-      setVisibleDhikrs((prevVisible) => ({ ...prevVisible, [newDhikr]: true }));
-      setAllDhikrs((prevAll) => [...prevAll, newDhikr]);
-      saveVisibleDhikrs(user.uid, { ...visibleDhikrs, [newDhikr]: true });
+      const newVisible = { ...visibleDhikrs, [newDhikr]: true };
+      setVisibleDhikrs(newVisible);
+      const newAll = [...allDhikrs, newDhikr];
+      setAllDhikrs(newAll);
+      
+      // Always save local
+      updateLocal({ ...counts, [newDhikr]: 0 }, newVisible, newAll);
+
+      if (user) {
+        try {
+          await saveVisibleDhikrs(user.uid, newVisible);
+        } catch (error) {
+           console.error("Error saving new dhikr to cloud:", error);
+           // Don't alert here to keep it smooth, just log
+        }
+      }
       setNewDhikr('');
     }
   };
 
   const removeDhikr = async (dhikr: string) => {
+    const newVisible = { ...visibleDhikrs };
+    delete newVisible[dhikr];
+    setVisibleDhikrs(newVisible);
+    
+    const newCounts = { ...counts };
+    delete newCounts[dhikr];
+    setCounts(newCounts);
+    
+    const newAll = allDhikrs.filter((d) => d !== dhikr);
+    setAllDhikrs(newAll);
+
+    // Always save local
+    updateLocal(newCounts, newVisible, newAll);
+
     if (user) {
-      await removeDhikrFromDatabase(user.uid, dhikr);
-      setVisibleDhikrs((prevVisible) => {
-        const newVisible = { ...prevVisible };
-        delete newVisible[dhikr];
-        saveVisibleDhikrs(user.uid, newVisible);
-        return newVisible;
-      });
-      setCounts((prevCounts) => {
-        const newCounts = { ...prevCounts };
-        delete newCounts[dhikr];
-        return newCounts;
-      });
-      setAllDhikrs((prevAll) => prevAll.filter((d) => d !== dhikr));
+      try {
+        await removeDhikrFromDatabase(user.uid, dhikr);
+        await saveVisibleDhikrs(user.uid, newVisible);
+      } catch (error) {
+        console.error("Error removing dhikr from cloud:", error);
+      }
     }
   };
 
   const fetchAllEntries = async () => {
     if (user) {
-      const allDhikrs = await getAllDhikrs(user.uid);
-      setAllDhikrs(allDhikrs);
-      const newVisibleDhikrs: VisibleDhikrs = {};
-      allDhikrs.forEach((dhikr) => {
-        newVisibleDhikrs[dhikr] = true;
-      });
-      setVisibleDhikrs(newVisibleDhikrs);
-      saveVisibleDhikrs(user.uid, newVisibleDhikrs);
+      try {
+        const allDhikrs = await getAllDhikrs(user.uid);
+        setAllDhikrs(allDhikrs);
+        const newVisibleDhikrs: VisibleDhikrs = {};
+        allDhikrs.forEach((dhikr) => {
+          newVisibleDhikrs[dhikr] = true;
+        });
+        setVisibleDhikrs(newVisibleDhikrs);
+        
+        // Update local
+        updateLocal(counts, newVisibleDhikrs, allDhikrs);
+
+        await saveVisibleDhikrs(user.uid, newVisibleDhikrs);
+      } catch (error) {
+        console.error("Error fetching all entries:", error);
+      }
     }
   };
 
@@ -276,53 +373,22 @@ export default function DhikrCounter() {
     );
   };
 
-  if (!user) {
-    return (
-      <div className="flex justify-center items-center h-screen ">
-        <button
-          onClick={signIn}
-          className="flex items-center border-gray-800 border-2 text-gray-800 gap-1 text-xs font-semibold rounded px-4 py-2 bg-white hover:bg-opacity-85"
-        >
-          <span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              x="0px"
-              y="0px"
-              width="30"
-              height="30"
-              viewBox="0 0 48 48"
-            >
-              <path
-                fill="#fbc02d"
-                d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12	s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20	s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
-              ></path>
-              <path
-                fill="#e53935"
-                d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039	l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
-              ></path>
-              <path
-                fill="#4caf50"
-                d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36	c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"
-              ></path>
-              <path
-                fill="#1565c0"
-                d="M43.611,20.083L43.595,20L42,20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571	c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
-              ></path>
-            </svg>
-          </span>
-          Sign in with Google
-        </button>
-      </div>
-    );
-  }
-
   return (
     <div className="container mx-auto p-4  text-colorBlue min-h-screen">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Dhikr Counter</h1>
-        <Button onClick={signOut} className="bg-[#F22B29] hover:">
-          Sign Out
-        </Button>
+        {user ? (
+          <div className="flex items-center gap-2">
+            <span className="text-sm hidden md:inline">Signed in as {user.displayName}</span>
+            <Button onClick={signOut} className="bg-[#F22B29] hover:">
+              Sign Out
+            </Button>
+          </div>
+        ) : (
+          <Button onClick={signIn} className="bg-Primarysajdah hover:bg-opacity-90">
+            Sign In to Sync
+          </Button>
+        )}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         {allDhikrs.concat(defaultDhikrs).map(
@@ -347,7 +413,7 @@ export default function DhikrCounter() {
                         <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                         <AlertDialogDescription className="text-colorPurple">
                           This will remove the dhikr card and delete all
-                          associated data from the database. This action cannot
+                          associated data. This action cannot
                           be undone.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
@@ -393,10 +459,12 @@ export default function DhikrCounter() {
           <Save className="h-4 w-4 mr-2" />
           Save All Dhikrs
         </Button>
-        <Button onClick={fetchAllEntries} className="hover:bg-colorGreen">
-          <Download className="h-4 w-4 mr-2 " />
-          Fetch All Entries
-        </Button>
+        {user && (
+          <Button onClick={fetchAllEntries} className="hover:bg-colorGreen">
+            <Download className="h-4 w-4 mr-2 " />
+            Fetch All Entries
+          </Button>
+        )}
       </div>
       <Card className="mb-4  text-colorBlue ">
         <CardHeader>

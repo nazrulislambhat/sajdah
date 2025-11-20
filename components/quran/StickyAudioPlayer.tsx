@@ -14,7 +14,9 @@ interface StickyAudioPlayerProps {
   onPrev: () => void;
   ayahNumber: number;
   surahName: string;
-  onClose?: () => void; // Optional close button
+  translation?: string;
+  transliteration?: string;
+  onClose?: () => void;
 }
 
 export default function StickyAudioPlayer({
@@ -26,13 +28,16 @@ export default function StickyAudioPlayer({
   onPrev,
   ayahNumber,
   surahName,
-  onClose
+  onClose,
+  translation,
+  transliteration
 }: StickyAudioPlayerProps) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [showSpeedMenu, setShowSpeedMenu] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -86,7 +91,7 @@ export default function StickyAudioPlayer({
 
   return (
     <div className="fixed bottom-24 left-0 right-0 flex justify-center z-50 px-4">
-      <div className="bg-white/95 backdrop-blur-md border border-gray-200 shadow-2xl rounded-2xl w-full max-w-md p-4 animate-in slide-in-from-bottom-10 fade-in duration-300">
+      <div className="bg-white/95 backdrop-blur-md border border-gray-200 shadow-2xl rounded-3xl w-full max-w-md p-6 animate-in slide-in-from-bottom-10 fade-in duration-300">
         <audio
           ref={audioRef}
           src={src}
@@ -96,13 +101,31 @@ export default function StickyAudioPlayer({
         />
 
         {/* Top Row: Info & Close */}
-        <div className="flex justify-between items-center mb-2">
-          <div className="text-xs text-gray-500 font-medium">
-            {surahName} • Ayah {ayahNumber}
+        <div className="flex justify-between items-start mb-4">
+          <div className="flex-1 mr-4">
+             <div className="flex items-center gap-2 mb-1">
+                <span className="text-xs font-bold text-primarySajdah bg-primarySajdah/10 px-2 py-0.5 rounded-full">
+                  {surahName}
+                </span>
+                <span className="text-xs text-gray-400">Ayah {ayahNumber}</span>
+             </div>
+             
+             {/* Translation Display */}
+             <div className="cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
+                <p className={`text-sm font-medium text-gray-800 leading-snug ${!isExpanded && 'line-clamp-2'}`}>
+                  {translation}
+                </p>
+                {transliteration && (
+                  <p className={`text-xs text-gray-500 mt-1 italic ${!isExpanded && 'truncate'}`}>
+                    {transliteration}
+                  </p>
+                )}
+             </div>
           </div>
+          
           {onClose && (
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
-              <X className="h-4 w-4" />
+            <button onClick={onClose} className="text-gray-400 hover:text-redSajdah transition-colors p-1">
+              <X className="h-5 w-5" />
             </button>
           )}
         </div>

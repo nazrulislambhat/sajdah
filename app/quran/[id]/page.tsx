@@ -189,19 +189,20 @@ export default function SurahDetail({ params }: { params: { id: string } }) {
         </div>
 
         {/* Surah Info Card */}
-        <Card className={`mb-8 border-none shadow-lg transition-colors duration-300 ${cardThemeStyles[settings.theme]}`}>
-          <CardContent className="p-8 text-center">
-            <h1 className="text-4xl font-bold text-darkSajdah mb-2 font-amiri">
+        <Card className={`mb-8 border-none shadow-lg transition-colors duration-300 rounded-3xl overflow-hidden ${cardThemeStyles[settings.theme]}`}>
+          <div className="bg-primarySajdah/10 p-6 flex flex-col items-center justify-center border-b border-primarySajdah/5">
+             <h1 className="text-5xl font-bold text-primarySajdah mb-2 font-amiri">
               {surah.name}
             </h1>
-            <h2 className={`text-2xl font-semibold ${settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-800'}`}>
+            <h2 className={`text-2xl font-bold ${settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-800'}`}>
               {surah.englishName}
             </h2>
-            <p className="text-gray-500 mb-4">{surah.englishNameTranslation}</p>
-            <div className="flex justify-center gap-4 text-sm text-gray-400">
-              <span>{surah.revelationType}</span>
-              <span>•</span>
-              <span>{surah.numberOfAyahs} Ayahs</span>
+            <p className="text-gray-500 text-sm font-medium">{surah.englishNameTranslation}</p>
+          </div>
+          <CardContent className="p-6 text-center">
+            <div className="flex justify-center gap-6 text-sm text-gray-400 font-medium tracking-wide uppercase">
+              <span className="bg-gray-100 px-3 py-1 rounded-full">{surah.revelationType}</span>
+              <span className="bg-gray-100 px-3 py-1 rounded-full">{surah.numberOfAyahs} Ayahs</span>
             </div>
           </CardContent>
         </Card>
@@ -211,23 +212,23 @@ export default function SurahDetail({ params }: { params: { id: string } }) {
           
           {/* Page Layout (Mushaf Style) */}
           {settings.layout === 'page' && (
-             <div className={`p-6 rounded-xl shadow-sm leading-[2.5] text-justify ${cardThemeStyles[settings.theme]}`} dir="rtl">
+             <div className={`p-8 rounded-3xl shadow-sm leading-[2.5] text-justify ${cardThemeStyles[settings.theme]}`} dir="rtl">
                 {surah.ayahs.map((ayah, index) => (
                   <span 
                     key={ayah.number} 
                     ref={(el) => { ayahRefs.current[index] = el as HTMLDivElement }}
-                    className={`inline transition-  s duration-300 ${activeAyahIndex === index ? 'bg-darkSajdah/20 rounded px-1' : ''}`}
+                    className={`inline transition-all duration-300 ${activeAyahIndex === index ? 'bg-primarySajdah/20 rounded px-1 box-decoration-clone' : ''}`}
                   >
                     <span 
-                      className="font-amiri cursor-pointer hover:text-darkSajdah"
+                      className="font-amiri cursor-pointer hover:text-primarySajdah transition-colors"
                       style={{ fontSize: `${settings.fontSize}px` }}
                       onClick={() => handlePlayPause(index)}
                     >
                       {ayah.text}
                     </span>
-                    <span className="relative inline-flex items-center justify-center w-10 h-10 mx-1 align-middle">
-                       <span className="text-darkSajdah font-amiri text-4xl leading-none">۝</span>
-                       <span className="absolute text-[0.6em] font-bold text-darkSajdah pt-1">{ayah.numberInSurah.toLocaleString('ar-EG')}</span>
+                    <span className="relative inline-flex items-center justify-center w-12 h-12 mx-1 align-middle select-none">
+                       <span className="text-primarySajdah font-amiri text-5xl leading-none">۝</span>
+                       <span className="absolute text-[0.5em] font-bold text-primarySajdah pt-2">{ayah.numberInSurah.toLocaleString('ar-EG')}</span>
                     </span>
                   </span>
                 ))}
@@ -255,6 +256,8 @@ export default function SurahDetail({ params }: { params: { id: string } }) {
               }}
               ayahNumber={surah.ayahs[activeAyahIndex].numberInSurah}
               surahName={surah.name}
+              translation={surah.ayahs[activeAyahIndex].translation}
+              transliteration={surah.ayahs[activeAyahIndex].transliteration}
               onClose={() => {
                 setIsPlaying(false);
                 setActiveAyahIndex(null);
@@ -265,46 +268,52 @@ export default function SurahDetail({ params }: { params: { id: string } }) {
           {/* List Layout (Ayah by Ayah) */}
           {settings.layout === 'list' && surah.ayahs.map((ayah, index) => (
             <div key={ayah.number} ref={(el) => { ayahRefs.current[index] = el as HTMLDivElement }}>
-              <Card className={`border-none shadow-sm hover:shadow-md transition-all duration-300 ${cardThemeStyles[settings.theme]} ${activeAyahIndex === index ? 'ring-2 ring-darkSajdah/50 scale-[1.01]' : ''}`}>
-                <CardContent className="p-6">
-                  <div className="flex flex-col gap-6">
-                    <div className="flex items-center justify-between border-b border-gray-100/10 pb-4">
-                      <span className="bg-darkSajdah/10 text-darkSajdah text-xs font-bold px-3 py-1 rounded-full">
+              <Card className={`border-none shadow-sm hover:shadow-md transition-all duration-300 rounded-3xl overflow-hidden ${cardThemeStyles[settings.theme]} ${activeAyahIndex === index ? 'ring-2 ring-primarySajdah scale-[1.01]' : ''}`}>
+                <div className={`px-6 py-4 border-b flex items-center justify-between ${settings.theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-100'}`}>
+                    <span className="bg-primarySajdah/10 text-primarySajdah text-sm font-bold px-4 py-1.5 rounded-full">
                         {surah.number}:{ayah.numberInSurah}
-                      </span>
-                      <AudioPlayer 
-                        src={ayah.audio} 
-                        isPlaying={activeAyahIndex === index && isPlaying}
-                        onPlayPause={() => handlePlayPause(index)}
-                        onEnded={() => handleAyahEnded(index)}
-                      />
+                    </span>
+                    <div className="flex items-center gap-3">
+                        <Button 
+                            size="icon" 
+                            variant="ghost" 
+                            className="h-8 w-8 rounded-full hover:bg-primarySajdah/10 hover:text-primarySajdah"
+                            onClick={() => handlePlayPause(index)}
+                        >
+                            {activeAyahIndex === index && isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+                        </Button>
                     </div>
+                </div>
+                <CardContent className="p-6">
+                  <div className="flex flex-col gap-8">
                     
                     {/* Arabic Text */}
                     <p 
-                      className={`text-right font-amiri leading-loose ${settings.theme === 'dark' ? 'text-gray-100' : 'text-gray-800'}`} 
+                      className={`text-right font-amiri leading-[2.5] ${settings.theme === 'dark' ? 'text-gray-100' : 'text-gray-800'}`} 
                       dir="rtl"
                       style={{ fontSize: `${settings.fontSize}px` }}
                     >
                       {ayah.text}
                     </p>
                     
-                    {/* Transliteration */}
-                    {settings.showTranslation && (
-                      <p className="text-gray-500 italic text-sm">
-                        {ayah.transliteration}
-                      </p>
-                    )}
+                    <div className="space-y-4">
+                        {/* Transliteration */}
+                        {settings.showTranslation && (
+                        <p className="text-primarySajdah font-medium text-sm tracking-wide">
+                            {ayah.transliteration}
+                        </p>
+                        )}
 
-                    {/* Urdu Translation */}
-                    {settings.showTranslation && (
-                      <p 
-                        className={`text-right font-noto-nastaliq text-lg leading-loose ${settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`} 
-                        dir="rtl"
-                      >
-                        {ayah.translation}
-                      </p>
-                    )}
+                        {/* Urdu Translation */}
+                        {settings.showTranslation && (
+                        <p 
+                            className={`text-right font-noto-nastaliq text-xl leading-loose ${settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`} 
+                            dir="rtl"
+                        >
+                            {ayah.translation}
+                        </p>
+                        )}
+                    </div>
                   </div>
                 </CardContent>
               </Card>

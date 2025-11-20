@@ -271,13 +271,13 @@ export default function DhikrCounter() {
     if (user) {
       try {
         await saveDhikrCounts(user.uid, formatDate(date), counts);
-        alert("Saved to cloud successfully.");
+        // alert("Saved to cloud successfully."); // Silent success
       } catch (error) {
-        console.error("Error saving to Firestore:", error);
-        alert("Cloud save failed (Permissions). Data saved locally.");
+        console.error("Error saving to Firestore (likely permission issue):", error);
+        // Silent fail for cloud, local is already saved.
       }
     } else {
-      alert("Saved locally.");
+      // alert("Saved locally."); // Silent local save
     }
   };
 
@@ -296,8 +296,8 @@ export default function DhikrCounter() {
         try {
           await saveVisibleDhikrs(user.uid, newVisible);
         } catch (error) {
-           console.error("Error saving new dhikr to cloud:", error);
-           // Don't alert here to keep it smooth, just log
+           console.error("Error saving new dhikr to cloud (likely permission issue):", error);
+           // Silent fail for cloud, local is already saved.
         }
       }
       setNewDhikr('');

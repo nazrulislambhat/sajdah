@@ -35,9 +35,9 @@ export default function Dashboard() {
         <p className="text-gray-500">Your Personal Deen Companion</p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 gap-6 max-w-md mx-auto">
         {/* Prayer Times and Qibla Widgets */}
-        <div className="dashboard-card md:col-span-2 lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6">
           {/* Prayer Times Widget */}
           <Link href="/nimaz" className="block h-full">
             <Card className="h-full bg-white border-none shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden relative group rounded-3xl">

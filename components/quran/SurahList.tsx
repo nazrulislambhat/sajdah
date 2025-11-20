@@ -55,7 +55,7 @@ export default function SurahList() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primarySajdah"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-darkSajdah"></div>
       </div>
     );
   }
@@ -69,17 +69,17 @@ export default function SurahList() {
           placeholder="Search Surah by name or number..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-10 bg-white border-primarySajdah/20 focus:border-primarySajdah"
+          className="pl-10 bg-white border-darkSajdah/20 focus:border-darkSajdah"
         />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredSurahs.map((surah) => (
           <Link href={`/quran/${surah.number}`} key={surah.number}>
-            <Card className="hover:shadow-md transition-shadow cursor-pointer border-primarySajdah/10 hover:border-primarySajdah/30">
+            <Card className="hover:shadow-md transition-shadow cursor-pointer border-darkSajdah/10 hover:border-darkSajdah/30">
               <CardContent className="p-4 flex items-center justify-between">
                 <div className="flex items-center space-x-4">
-                  <div className="bg-primarySajdah/10 text-primarySajdah font-bold w-10 h-10 rounded-full flex items-center justify-center text-sm">
+                  <div className="bg-darkSajdah/10 text-darkSajdah font-bold w-10 h-10 rounded-full flex items-center justify-center text-sm">
                     {surah.number}
                   </div>
                   <div>
@@ -92,7 +92,7 @@ export default function SurahList() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-amiri text-xl text-primarySajdah">
+                  <p className="font-amiri text-xl text-darkSajdah">
                     {surah.name}
                   </p>
                   <p className="text-xs text-gray-400">

@@ -76,16 +76,16 @@ export default function Duas() {
   console.log('selectedduas:', selectedduas);
 
   return (
-    <div className="border-Primarysajdah px-8 py-12 border-2 h-fit w-fit xl:w-full bg-Lightsajdah  boxed rounded-lg flex flex-col items-center justify-center pt-6">
-      <h2 className="text-Primarysajdah font-bold text-4xl flex flex-col items-center gap-4">
+    <div className="border-primarySajdah px-8 py-12 border-2 h-fit w-fit xl:w-full bg-lightSajdah  boxed rounded-lg flex flex-col items-center justify-center pt-6">
+      <h2 className="text-primarySajdah font-bold text-4xl flex flex-col items-center gap-4">
         Daily Duas{' '}
-        <span className="text-xs text-Primarysajdah">
+        <span className="text-xs text-primarySajdah">
           Click the card to read the full duas
         </span>
       </h2>
       <Link
         href="/"
-        className="border-2 gap-1 flex items-center justify-between border-Primarysajdah text-Primarysajdah font-bold bg-Lightsajdah text-xs px-6 py-3 rounded-md hover:border-Lightsajdah hover:bg-Primarysajdah transition duration-300 ease-in-out hover:text-Lightsajdah hover:border-2 my-4"
+        className="border-2 gap-1 flex items-center justify-between border-primarySajdah text-primarySajdah font-bold bg-lightSajdah text-xs px-6 py-3 rounded-md hover:border-lightSajdah hover:bg-primarySajdah transition duration-300 ease-in-out hover:text-lightSajdah hover:border-2 my-4"
       >
         Home
         <svg
@@ -125,7 +125,7 @@ export default function Duas() {
                   src={imageUrls[index % imageUrls.length]}
                 />
               </CardBody>
-              <CardFooter className="text-small justify-between flex flex-col items-center bg-Lightsajdah p-b-8">
+              <CardFooter className="text-small justify-between flex flex-col items-center bg-lightSajdah p-b-8">
                 <p className="text-xs font-bold py-2 text-Tertiarysajdah">
                   {duas.title}
                 </p>
@@ -143,7 +143,7 @@ export default function Duas() {
         className="duas-modal absolute"
       >
         <ModalContent>
-          <ModalBody className="bg-Lightsajdah p-4 rounded-xl">
+          <ModalBody className="bg-lightSajdah p-4 rounded-xl">
             <p className="text-xs text-Tertiarysajdah p-4">
               {selectedduas ? selectedduas.english : ''}
             </p>

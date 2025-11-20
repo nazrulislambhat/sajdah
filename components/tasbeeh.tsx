@@ -85,84 +85,82 @@ export default function TasbeehCounter() {
     <motion.div
       initial={{ opacity: 0, scale: 0.5 }} // Initial animation when component loads
       animate={{ opacity: 1, scale: 1 }} // Animation when component is rendered
-      className="bg-Whitesajdah px-8 py-12 relative flex items-center boxed flex-col justify-center border-2 border-Primarysajdah rounded-lg w-fit xl:w-96 "
+      className="bg-white relative flex items-center flex-col justify-between shadow-xl rounded-3xl w-full max-w-md overflow-hidden h-[600px]"
     >
-      <select
-        value={selectedDhikr}
-        onChange={handleDhikrChange}
-        className="mb-4 text-xs bg-transparent py-2 px-2 text-Primarysajdah border-2 border-Primarysajdah rounded focus-visible:border-Secondarysajdah"
-      >
-        <option value="">Select Dhikr</option>
-        <option value="Alhamdulillah">Alhamdulillah </option>
-        <option value="Allahu Akbar">Allahu Akbar</option>
-        <option value="La Ilaha Illa Allah">La Ilaha Illa Allah </option>
-        <option value="Astaghfirullah ">Astaghfirullah </option>
-      </select>
+      {/* Header Section */}
+      <div className="w-full bg-primarySajdah/20 p-6 pb-12 rounded-b-[3rem] flex flex-col items-center relative z-10">
+        <div className="w-full flex justify-between items-center mb-4">
+             <span className="text-sm font-bold text-primarySajdah">Current Dhikr</span>
+             <span className="text-xs text-gray-500 cursor-pointer hover:text-primarySajdah">Change</span>
+        </div>
+        
+        <select
+            value={selectedDhikr}
+            onChange={handleDhikrChange}
+            className="absolute opacity-0 w-full h-10 top-6 cursor-pointer"
+        >
+            <option value="">Select Dhikr</option>
+            <option value="Alhamdulillah">Alhamdulillah</option>
+            <option value="Allahu Akbar">Allahu Akbar</option>
+            <option value="La Ilaha Illa Allah">La Ilaha Illa Allah</option>
+            <option value="Astaghfirullah">Astaghfirullah</option>
+        </select>
 
-      <h2 className="text-2xl min-w-80 w-80 mb-4 text-wrap flex items-center justify-center text-center text-Secondarysajdah break-words">
-        {selectedDhikr}
-        {/* {selectedDhikr && ( // Render the button only when selectedDhikr is not empty
-          <button className="speaker-icon" onClick={readSelectedDhikr}>
-            <Image
-              src={SpeakerIcon}
-              alt="Speaker icon"
-              width={16}
-              height={16}
-              className="min-w-4 min-h-4"
-            />
-          </button>
-        )} */}
-      </h2>
+        <h2 className="text-3xl font-bold text-center text-gray-800 break-words font-amiri mb-2">
+            {selectedDhikr || "Select Dhikr"}
+        </h2>
+        <p className="text-sm text-primarySajdah font-medium">
+            &quot;Praise be to Allah&quot;
+        </p>
+      </div>
 
-      <motion.h2
-        className="flex items-center flex-col justify-center w-24 min-w-24 text-8xl mb-4 text-Primarysajdah"
-        variants={countVariants}
-        initial="hidden"
-        animate="visible"
-        key={count}
-      >
-        {count}
-      </motion.h2>
-      <motion.button
-        className={`text-6xl rounded-full p-12 max-h-8 max-w-8 text-Lightsajdah flex items-center flex-col justify-center bg-Primarysajdah transition duration-300 ease-in-out transform hover:scale-105 mb-6 ${
-          !selectedDhikr && 'opacity-50'
-        }`}
-        onClick={incrementCount}
-        whileHover={{ scale: 1.1 }} // Animation on hover
-        whileTap={{ scale: 0.7 }} // Animation on tap/click
-        disabled={!selectedDhikr}
-        style={{ pointerEvents: selectedDhikr ? 'auto' : 'none' }}
-      >
-        +
-      </motion.button>
+      {/* Counter Section */}
+      <div className="flex-1 flex flex-col items-center justify-center w-full relative">
+        {/* Bead String Visualization (Simplified) */}
+        <div className="absolute top-1/2 left-0 w-full h-32 -translate-y-1/2 pointer-events-none opacity-20">
+             <svg width="100%" height="100%" viewBox="0 0 400 100">
+                 <path d="M0,50 Q200,100 400,50" fill="none" stroke="#35FF69" strokeWidth="2" />
+             </svg>
+        </div>
 
-      <motion.button
-        onClick={resetCount}
-        whileHover={{ scale: 1.1 }} // Animation on hover
-        whileTap={{ scale: 0.7 }} // Animation on tap/click
-        style={{ pointerEvents: count ? 'auto' : 'none' }}
-        className={`box-border relative z-30 inline-flex items-center justify-center w-auto min-h-10 px-6 py-2 text-xs overflow-hidden font-semibold text-Lightsajdah transition-all duration-300 bg-Redsajdah rounded-md cursor-pointer group ring-offset-2 ring-1 ring-Lightsajdah ring-offset-Lightsajdah hover:ring-offset-Lightsajdah ease focus:outline-none ${
-          !count && 'opacity-50'
-        }`}
-      >
-        <span className="relative z-20 flex items-center text-xs">
-          <svg
-            className="relative w-5 h-5 mr-2 text-Lightsajdah"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M13 10V3L4 14h7v7l9-11h-7z"
-            ></path>
-          </svg>
-          Clear
-        </span>
-      </motion.button>
+        <div className="bg-orange-100 text-orange-600 px-4 py-1 rounded-full text-sm font-bold mb-8">
+            {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+        </div>
+
+        <motion.h2
+            className="text-8xl font-bold text-gray-800 mb-8 font-mono"
+            variants={countVariants}
+            initial="hidden"
+            animate="visible"
+            key={count}
+        >
+            {count}
+        </motion.h2>
+      </div>
+
+      {/* Controls Section */}
+      <div className="w-full p-8 pb-12 flex flex-col items-center gap-4">
+         <p className="text-xs text-gray-400 mb-2">Tap to count</p>
+         
+         <motion.button
+            className={`w-20 h-20 rounded-full bg-primarySajdah shadow-lg shadow-primarySajdah/30 flex items-center justify-center text-white text-4xl transition-transform ${!selectedDhikr && 'opacity-50 cursor-not-allowed'}`}
+            onClick={incrementCount}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            disabled={!selectedDhikr}
+         >
+            +
+         </motion.button>
+
+         <motion.button
+            onClick={resetCount}
+            whileTap={{ scale: 0.95 }}
+            className="text-xs text-gray-400 hover:text-redSajdah mt-4 flex items-center gap-1"
+         >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+            Reset Counter
+         </motion.button>
+      </div>
     </motion.div>
   );
 }

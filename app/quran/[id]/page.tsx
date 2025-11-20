@@ -146,7 +146,7 @@ export default function SurahDetail({ params }: { params: { id: string } }) {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen bg-lightSajdah">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primarySajdah"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-darkSajdah"></div>
       </div>
     );
   }
@@ -177,7 +177,7 @@ export default function SurahDetail({ params }: { params: { id: string } }) {
       <div className="max-w-4xl mx-auto">
         <div className="mb-6 flex items-center justify-between sticky top-4 z-40 bg-inherit/80 backdrop-blur-sm p-2 rounded-xl">
           <Link href="/quran">
-            <Button variant="ghost" className="gap-2 hover:bg-primarySajdah/10">
+            <Button variant="ghost" className="gap-2 hover:bg-darkSajdah/10">
               <ArrowLeft className="h-4 w-4" />
               Back
             </Button>
@@ -191,7 +191,7 @@ export default function SurahDetail({ params }: { params: { id: string } }) {
         {/* Surah Info Card */}
         <Card className={`mb-8 border-none shadow-lg transition-colors duration-300 ${cardThemeStyles[settings.theme]}`}>
           <CardContent className="p-8 text-center">
-            <h1 className="text-4xl font-bold text-primarySajdah mb-2 font-amiri">
+            <h1 className="text-4xl font-bold text-darkSajdah mb-2 font-amiri">
               {surah.name}
             </h1>
             <h2 className={`text-2xl font-semibold ${settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-800'}`}>
@@ -216,18 +216,18 @@ export default function SurahDetail({ params }: { params: { id: string } }) {
                   <span 
                     key={ayah.number} 
                     ref={(el) => { ayahRefs.current[index] = el as HTMLDivElement }}
-                    className={`inline transition-colors duration-300 ${activeAyahIndex === index ? 'bg-primarySajdah/20 rounded px-1' : ''}`}
+                    className={`inline transition-  s duration-300 ${activeAyahIndex === index ? 'bg-darkSajdah/20 rounded px-1' : ''}`}
                   >
                     <span 
-                      className="font-amiri cursor-pointer hover:text-primarySajdah"
+                      className="font-amiri cursor-pointer hover:text-darkSajdah"
                       style={{ fontSize: `${settings.fontSize}px` }}
                       onClick={() => handlePlayPause(index)}
                     >
                       {ayah.text}
                     </span>
                     <span className="relative inline-flex items-center justify-center w-10 h-10 mx-1 align-middle">
-                       <span className="text-primarySajdah font-amiri text-4xl leading-none">۝</span>
-                       <span className="absolute text-[0.6em] font-bold text-primarySajdah pt-1">{ayah.numberInSurah.toLocaleString('ar-EG')}</span>
+                       <span className="text-darkSajdah font-amiri text-4xl leading-none">۝</span>
+                       <span className="absolute text-[0.6em] font-bold text-darkSajdah pt-1">{ayah.numberInSurah.toLocaleString('ar-EG')}</span>
                     </span>
                   </span>
                 ))}
@@ -265,11 +265,11 @@ export default function SurahDetail({ params }: { params: { id: string } }) {
           {/* List Layout (Ayah by Ayah) */}
           {settings.layout === 'list' && surah.ayahs.map((ayah, index) => (
             <div key={ayah.number} ref={(el) => { ayahRefs.current[index] = el as HTMLDivElement }}>
-              <Card className={`border-none shadow-sm hover:shadow-md transition-all duration-300 ${cardThemeStyles[settings.theme]} ${activeAyahIndex === index ? 'ring-2 ring-primarySajdah/50 scale-[1.01]' : ''}`}>
+              <Card className={`border-none shadow-sm hover:shadow-md transition-all duration-300 ${cardThemeStyles[settings.theme]} ${activeAyahIndex === index ? 'ring-2 ring-darkSajdah/50 scale-[1.01]' : ''}`}>
                 <CardContent className="p-6">
                   <div className="flex flex-col gap-6">
                     <div className="flex items-center justify-between border-b border-gray-100/10 pb-4">
-                      <span className="bg-primarySajdah/10 text-primarySajdah text-xs font-bold px-3 py-1 rounded-full">
+                      <span className="bg-darkSajdah/10 text-darkSajdah text-xs font-bold px-3 py-1 rounded-full">
                         {surah.number}:{ayah.numberInSurah}
                       </span>
                       <AudioPlayer 

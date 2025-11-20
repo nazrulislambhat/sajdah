@@ -388,7 +388,7 @@ export default function DhikrCounter() {
             </Button>
           </div>
         ) : (
-          <Button onClick={signIn} className="bg-Primarysajdah hover:bg-opacity-90">
+          <Button onClick={signIn} className="bg-primarySajdah hover:bg-opacity-90">
             Sign In to Sync
           </Button>
         )}

@@ -100,40 +100,54 @@ export default function QiblaWidget() {
   }
 
   return (
-    <Card className="h-full bg-white/50 backdrop-blur-sm border-none shadow-sm overflow-hidden relative">
-      <CardHeader className="pb-2 relative z-10">
-        <CardTitle className="text-lg font-bold text-gray-700 flex items-center gap-2">
-          <Compass className="h-5 w-5 text-primarySajdah" />
-          Qibla
-        </CardTitle>
+    <Card className="h-full bg-white border-none shadow-none overflow-hidden relative rounded-3xl">
+      <CardHeader className="pb-2 relative z-10 bg-secondarySajdah/10 p-4">
+        <div className="flex justify-between items-center">
+             <CardTitle className="text-lg font-bold text-secondarySajdah flex items-center gap-2">
+                <Compass className="h-5 w-5" />
+                Qibla
+            </CardTitle>
+            <span className="text-xs text-gray-500 bg-white/50 px-2 py-1 rounded-full">
+                {coords ? 'Location Active' : 'No Location'}
+            </span>
+        </div>
+        <p className="text-xs text-gray-500 mt-1">
+            {coords ? `Lat: ${coords.latitude.toFixed(2)}, Lng: ${coords.longitude.toFixed(2)}` : 'Enable location'}
+        </p>
       </CardHeader>
-      <CardContent className="flex flex-col items-center justify-center p-4 relative z-10">
-        <div className="relative w-32 h-32 flex items-center justify-center">
-          {/* Compass Rose / Background */}
-          <div 
-            className="absolute inset-0 border-4 border-gray-200 rounded-full transition-transform duration-500 ease-out"
-            style={{ transform: `rotate(${-compassHeading}deg)` }}
-          >
-             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1 text-xs font-bold text-gray-400">N</div>
-          </div>
+      
+      <CardContent className="relative z-10 flex flex-col items-center justify-center p-6 pt-8">
+        {/* Compass Circle */}
+        <div 
+          className="relative w-48 h-48 rounded-full border-4 border-gray-100 flex items-center justify-center shadow-inner transition-transform duration-500 ease-out"
+          style={{ transform: `rotate(${-compassHeading}deg)` }}
+        >
+          {/* Cardinal Points */}
+          <div className="absolute top-2 text-xs font-bold text-gray-400">N</div>
+          <div className="absolute bottom-2 text-xs font-bold text-gray-400">S</div>
+          <div className="absolute right-2 text-xs font-bold text-gray-400">E</div>
+          <div className="absolute left-2 text-xs font-bold text-gray-400">W</div>
 
-          {/* Qibla Arrow */}
+          {/* Kaaba Icon / Direction Indicator */}
           <div 
-            className="absolute w-1 h-16 bg-transparent origin-bottom transition-transform duration-500 ease-out"
-            style={{ transform: `rotate(${qiblaDirection ? qiblaDirection - compassHeading : 0}deg) translateY(-50%)` }}
+            className="absolute w-full h-full flex justify-center items-start pt-4 transition-transform duration-500 ease-out"
+            style={{ transform: `rotate(${qiblaDirection}deg)` }}
           >
-             <div className="w-full h-full relative">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-b-[16px] border-b-primarySajdah"></div>
+             <div className="relative flex flex-col items-center">
+                {/* Arrow Head */}
+                <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[24px] border-b-primarySajdah drop-shadow-md"></div>
+                {/* Kaaba Icon (Simplified) */}
+                <div className="w-6 h-6 bg-black rounded-sm mt-1 border border-gold-500 shadow-sm"></div>
              </div>
           </div>
           
-          {/* Center Dot */}
-          <div className="w-2 h-2 bg-gray-800 rounded-full z-20"></div>
+          {/* Center Point */}
+          <div className="w-3 h-3 bg-gray-300 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 border-2 border-white"></div>
         </div>
         
-        <div className="mt-4 text-center">
-           <p className="text-2xl font-bold text-primarySajdah">{qiblaDirection?.toFixed(0)}°</p>
-           <p className="text-xs text-gray-500">from North</p>
+        <div className="mt-6 text-center">
+           <p className="text-3xl font-bold text-secondarySajdah">{qiblaDirection?.toFixed(0)}°</p>
+           <p className="text-xs text-gray-400 uppercase tracking-wider mt-1">from North</p>
         </div>
       </CardContent>
     </Card>

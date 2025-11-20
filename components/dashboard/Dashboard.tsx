@@ -40,17 +40,17 @@ export default function Dashboard() {
         <div className="dashboard-card md:col-span-2 lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Prayer Times Widget */}
           <Link href="/nimaz" className="block h-full">
-            <Card className="h-full bg-[#E3F2FD] border-none shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden relative group">
+            <Card className="h-full bg-white border-none shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden relative group rounded-3xl">
               <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                <Clock className="w-24 h-24 text-[#1E88E5]" />
+                <Clock className="w-24 h-24 text-primarySajdah" />
               </div>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-[#1565C0]">
+              <CardHeader className="bg-primarySajdah/10 pb-4">
+                <CardTitle className="flex items-center gap-2 text-primarySajdah">
                   <Clock className="w-5 h-5" />
                   Prayer Times
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-6">
                 <PrayerTimesWidget />
               </CardContent>
             </Card>
@@ -58,76 +58,76 @@ export default function Dashboard() {
 
           {/* Qibla Widget */}
           <Link href="/qibla" className="block h-full">
-            <Card className="h-full bg-[#F0F4C3] border-none shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden relative group">
+            <Card className="h-full bg-white border-none shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden relative group rounded-3xl">
               <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                <ScrollText className="w-24 h-24 text-[#AFB42B]" />
+                <ScrollText className="w-24 h-24 text-secondarySajdah" />
               </div>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-[#827717]">
+              <CardHeader className="bg-secondarySajdah/10 pb-4">
+                <CardTitle className="flex items-center gap-2 text-secondarySajdah">
                   <ScrollText className="w-5 h-5" />
                   Qibla Direction
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-6">
                 <QiblaWidget />
               </CardContent>
             </Card>
           </Link>
         </div>
 
-        {/* Quran Widget - Pastel Green */}
+        {/* Quran Widget */}
         <Link href="/quran" className="dashboard-card block h-full">
-          <Card className="h-full bg-[#E8F5E9] border-none shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden relative group">
+          <Card className="h-full bg-white border-none shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden relative group rounded-3xl">
             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-              <BookOpen className="w-24 h-24 text-[#43A047]" />
+              <BookOpen className="w-24 h-24 text-primarySajdah" />
             </div>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-[#2E7D32]">
+            <CardHeader className="bg-primarySajdah/10 pb-4">
+              <CardTitle className="flex items-center gap-2 text-primarySajdah">
                 <BookOpen className="w-5 h-5" />
                 Quran
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
               <p className="text-gray-700 mb-4">Read and listen to the Holy Quran with translation.</p>
-              <div className="bg-white/50 rounded-lg p-3 text-sm text-gray-600">
-                <span className="font-bold">Last Read:</span> Surah Al-Fatiha
+              <div className="bg-lightSajdah rounded-2xl p-4 text-sm text-gray-600">
+                <span className="font-bold text-primarySajdah">Last Read:</span> Surah Al-Fatiha
               </div>
             </CardContent>
           </Card>
         </Link>
 
-        {/* Hadith Widget - Pastel Purple */}
+        {/* Hadith Widget */}
         <Link href="/hadith" className="dashboard-card block h-full">
-          <Card className="h-full bg-[#F3E5F5] border-none shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden relative group">
+          <Card className="h-full bg-white border-none shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden relative group rounded-3xl">
             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-              <Moon className="w-24 h-24 text-[#8E24AA]" />
+              <Moon className="w-24 h-24 text-secondarySajdah" />
             </div>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-[#6A1B9A]">
+            <CardHeader className="bg-secondarySajdah/10 pb-4">
+              <CardTitle className="flex items-center gap-2 text-secondarySajdah">
                 <Moon className="w-5 h-5" />
                 Daily Hadith
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
               <p className="text-gray-700 italic">&quot;Actions are judged by intentions...&quot;</p>
               <p className="text-xs text-gray-500 mt-2 text-right">- Sahih Bukhari</p>
             </CardContent>
           </Card>
         </Link>
 
-        {/* Dhikr Widget - Pastel Peach/Orange */}
+        {/* Dhikr Widget */}
         <Link href="/dhikr" className="dashboard-card block h-full">
-          <Card className="h-full bg-[#FFF3E0] border-none shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden relative group">
+          <Card className="h-full bg-white border-none shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden relative group rounded-3xl">
             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-              <Heart className="w-24 h-24 text-[#FB8C00]" />
+              <Heart className="w-24 h-24 text-redSajdah" />
             </div>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-[#EF6C00]">
+            <CardHeader className="bg-redSajdah/10 pb-4">
+              <CardTitle className="flex items-center gap-2 text-redSajdah">
                 <Heart className="w-5 h-5" />
                 Dhikr Tracker
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
               <DhikrWidget />
             </CardContent>
           </Card>

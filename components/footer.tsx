@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <nav className="flex h-16 xl:h-48 justify-center items-center flex-col bg-Primarysajdah boxed text-Whitesajdah">
+    <nav className="flex h-16 xl:h-48 justify-center items-center flex-col bg-primarySajdah boxed text-lightestSajdah">
       <ul className="flex gap-8 text-xs">
         <li>
           <Link href="/" className="underline-left-to-right">
